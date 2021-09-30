@@ -1,0 +1,42 @@
+footer {
+    
+       
+        color: #e9e5ec ;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 30px;
+        background-image: url("img/footerBG2.jpg");
+        background-position: center;
+    
+
+}
+
+
+@media only screen and (max-height: 890px){
+    footer {
+        display: none;
+    }   
+
+} 
+
+.gameOverMenu {
+    border-radius: 25px;
+    background-color: rgb(88, 75, 109);
+    position: fixed;
+    width: 250px;
+    height: 170px;
+    margin: auto;
+    top: 400px;
+    right: 0;
+    left: 0;
+    user-select: none;
+}
+
+.restart {
+    border-radius: 25px;
+    background-color: #6e057c;
+    color:black;
+    padding: 10px 32px;
+}
