@@ -1,0 +1,12 @@
+{
+  "name": "space-shootout",
+  "homepage": "https://github.com/Pupanek/Space-Shootout",
+  "version": "",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}
