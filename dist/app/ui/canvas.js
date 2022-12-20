@@ -1,8 +1,8 @@
 export class Canvas {
     constructor() {
         this.element = document.querySelector("#main__canvas");
-        console.log(this.element);
         this.context = this.element.getContext('2d');
+        this.boundingRect = this.element.getBoundingClientRect();
         this.WIDTH = this.element.width = 800;
         this.HEIGHT = this.element.height = 600;
     }
@@ -23,10 +23,9 @@ export class CanvasEvents {
         this.initKeyboardEvents();
     }
     initMouseEvents() {
-        const rect = this.canvas.element.getBoundingClientRect();
         this.canvas.element.addEventListener('mousemove', event => {
-            this._mouse.x = event.x - rect.x;
-            this._mouse.y = event.y - rect.y;
+            this._mouse.x = event.x - this.canvas.boundingRect.x;
+            this._mouse.y = event.y - this.canvas.boundingRect.y;
         });
     }
     initKeyboardEvents() {

@@ -3,13 +3,14 @@ export class Canvas {
 
   readonly element: HTMLCanvasElement;
   readonly context: CanvasRenderingContext2D;
+  readonly boundingRect: DOMRect;
   readonly WIDTH: number;
   readonly HEIGHT: number;
 
   private constructor() {
     this.element = document.querySelector("#main__canvas")! as HTMLCanvasElement;
-    console.log(this.element)
     this.context = this.element.getContext('2d')!;
+    this.boundingRect = this.element.getBoundingClientRect();
 
     this.WIDTH = this.element.width = 800;
     this.HEIGHT = this.element.height = 600;
@@ -41,10 +42,9 @@ export class CanvasEvents {
   }
 
   private initMouseEvents() {
-    const rect = this.canvas.element.getBoundingClientRect();
     this.canvas.element.addEventListener('mousemove', event => {
-      this._mouse.x = event.x - rect.x;
-      this._mouse.y = event.y - rect.y;
+      this._mouse.x = event.x - this.canvas.boundingRect.x;
+      this._mouse.y = event.y - this.canvas.boundingRect.y;
     })
   }
 
