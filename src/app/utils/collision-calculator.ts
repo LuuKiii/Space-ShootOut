@@ -1,4 +1,4 @@
-import { ShipBase } from "../models/base/ship-base.js";
+import { BaseShip } from "../models/base/ship-base.js";
 import { Canvas } from "../ui/canvas.js";
 
 export class CollisionCalculator {
@@ -10,7 +10,7 @@ export class CollisionCalculator {
     this.canvas = Canvas.getInstance();
   }
 
-  isWholeInbouds(ship: ShipBase): boolean {
+  isWholeInbouds(ship: BaseShip): boolean {
     if (ship.x - ship.radius < 0) {
       return false;
     }
@@ -26,7 +26,7 @@ export class CollisionCalculator {
     return true;
   }
 
-  isWholeOutOfBounds(ship: ShipBase): boolean {
+  isWholeOutOfBounds(ship: BaseShip): boolean {
     if (ship.x + ship.radius < 0) {
       return false;
     }

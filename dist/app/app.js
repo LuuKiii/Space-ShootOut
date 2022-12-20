@@ -1,14 +1,16 @@
 import { Canvas } from "./ui/canvas.js";
 import { MenuElement } from "./ui/menu.js";
 import { HudElement } from "./ui/hud.js";
-import { GameCore } from "./core/game.js";
+import { GameGlobalObject } from "./core/game-global-object.js";
 import { RenderBackground } from "./core/render-background.js";
+import { PlayerWeaponHandler } from "./core/player-weapon-handler.js";
 class App {
     constructor() {
         this.canvas = Canvas.getInstance();
         this.menu = MenuElement.getInstance();
         this.hud = HudElement.getInstance();
-        this.core = GameCore.getInstance();
+        this.globalObj = GameGlobalObject.getInstance();
+        this.playerWeaponHanlder = PlayerWeaponHandler.getInstance();
         this.renderBg = RenderBackground.getInstance();
         this.setup();
     }
@@ -16,9 +18,8 @@ class App {
         this.animate();
     }
     animate() {
-        // this.canvas.context.clearRect(0, 0, this.canvas.WIDTH, this.canvas.HEIGHT)
         this.renderBg.drawBackground();
-        this.core.updateAndDrawAllObjects();
+        this.globalObj.updateAndDrawAllObjects();
         requestAnimationFrame(this.animate.bind(this));
     }
 }

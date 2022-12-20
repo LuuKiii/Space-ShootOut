@@ -1,4 +1,4 @@
-export class ShipBase {
+export class BaseShip {
     constructor() {
         this._x = 0;
         this._y = 0;

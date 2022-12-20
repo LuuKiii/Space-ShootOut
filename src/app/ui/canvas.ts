@@ -67,7 +67,6 @@ export class CanvasEvents implements Subject {
     })
 
     this.canvas.element.addEventListener('wheel', event => {
-      console.log(event)
       event.preventDefault();
 
       if (event.deltaY > 0) {
@@ -75,7 +74,7 @@ export class CanvasEvents implements Subject {
       } else if (event.deltaY < 0) {
         this._mouse.button[MouseButtons[MouseButtons.ScrollUp]] = true;
       }
-      
+
       this.notify();
 
       delete this._mouse.button[MouseButtons[MouseButtons.ScrollDown]];
@@ -142,6 +141,6 @@ interface KeyboardEventData {
   [key: string | number]: boolean;
 }
 
-enum MouseButtons {
+export enum MouseButtons {
   LPM = 0, MMB = 1, PPM = 2, ScrollDown, ScrollUp
 }

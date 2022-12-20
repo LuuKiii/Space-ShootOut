@@ -41,7 +41,6 @@ export class CanvasEvents {
             this.notify();
         });
         this.canvas.element.addEventListener('wheel', event => {
-            console.log(event);
             event.preventDefault();
             if (event.deltaY > 0) {
                 this._mouse.button[MouseButtons[MouseButtons.ScrollDown]] = true;
@@ -93,7 +92,7 @@ export class CanvasEvents {
         return CanvasEvents.instace;
     }
 }
-var MouseButtons;
+export var MouseButtons;
 (function (MouseButtons) {
     MouseButtons[MouseButtons["LPM"] = 0] = "LPM";
     MouseButtons[MouseButtons["MMB"] = 1] = "MMB";

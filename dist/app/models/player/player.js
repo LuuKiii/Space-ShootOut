@@ -1,14 +1,14 @@
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
-import { ShipBase } from "../base/ship-base.js";
-export class Player extends ShipBase {
+import { Helper } from "../../utils/helper.js";
+import { BaseShip } from "../base/ship-base.js";
+export class Player extends BaseShip {
     constructor(x, y) {
         super();
         this.image = new Image();
         this.canvas = Canvas.getInstance();
         this.canvasEvents = CanvasEvents.getInstance();
         this.collision = CollisionCalculator.getInstance();
-        this.canvasEvents.register(this);
         this.init(x, y);
     }
     init(x, y) {
@@ -34,7 +34,7 @@ export class Player extends ShipBase {
         this.calculateMovement();
         this._x += this.dx;
         this._y += this.dy;
-        this.angle = Math.atan2(this.canvasEvents.mouse.x - this.x, -(this.canvasEvents.mouse.y - this.y));
+        this.angle = Helper.calculateRotateAngle(this, this.canvasEvents.mouse);
     }
     calculateMovement() {
         if (this.canvasEvents.keyboard["w"]) {
@@ -55,10 +55,6 @@ export class Player extends ShipBase {
             this.dx = -this.dx / 4;
             this.dy = -this.dy / 4;
         }
-    }
-    updateFromSubject() {
-        const mouse = this.canvasEvents.mouse.button;
-        console.log(mouse);
     }
     get x() {
         return this._x;

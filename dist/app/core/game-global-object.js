@@ -6,6 +6,7 @@ export class GameGlobalObject {
         this.core = {
             player: [new Player(canvas.WIDTH / 2, canvas.HEIGHT / 2)],
             enemies: [],
+            projectiles: [],
             misc: [],
         };
     }
@@ -24,4 +25,4 @@ export class GameGlobalObject {
         return GameGlobalObject.instance;
     }
 }
-//# sourceMappingURL=game.js.map
+//# sourceMappingURL=game-global-object.js.map

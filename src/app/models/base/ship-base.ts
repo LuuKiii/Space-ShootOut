@@ -1,4 +1,4 @@
-export abstract class ShipBase {
+export abstract class BaseShip {
   protected _x: number = 0;
   protected _y: number = 0;
   protected dx: number = 0;

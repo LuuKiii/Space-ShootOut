@@ -1,9 +1,9 @@
-import { Canvas, CanvasEvents } from "../../ui/canvas.js";
+import { Canvas, CanvasEvents, MouseButtons } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
-import { Observer } from "../../utils/observer.js";
-import { ShipBase } from "../base/ship-base.js";
+import { Helper } from "../../utils/helper.js";
+import { BaseShip } from "../base/ship-base.js";
 
-export class Player extends ShipBase implements Observer {
+export class Player extends BaseShip {
   readonly canvas: Canvas;
   readonly canvasEvents: CanvasEvents;
   readonly collision: CollisionCalculator;
@@ -16,7 +16,6 @@ export class Player extends ShipBase implements Observer {
     this.canvas = Canvas.getInstance();
     this.canvasEvents = CanvasEvents.getInstance();
     this.collision = CollisionCalculator.getInstance();
-    this.canvasEvents.register(this);
 
     this.init(x, y);
   }
@@ -49,7 +48,7 @@ export class Player extends ShipBase implements Observer {
     this._x += this.dx;
     this._y += this.dy;
 
-    this.angle = Math.atan2(this.canvasEvents.mouse.x - this.x, -(this.canvasEvents.mouse.y - this.y))
+    this.angle = Helper.calculateRotateAngle(this, this.canvasEvents.mouse)
   }
 
   calculateMovement() {
@@ -72,11 +71,6 @@ export class Player extends ShipBase implements Observer {
       this.dx = -this.dx / 4;
       this.dy = -this.dy / 4;
     }
-  }
-
-  updateFromSubject(): void {
-    const mouse = this.canvasEvents.mouse.button;
-    console.log(mouse)
   }
 
   get x() {
