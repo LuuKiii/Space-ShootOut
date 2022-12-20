@@ -1,8 +1,8 @@
-import { ShipBase } from "../models/shipBase.js";
+import { ShipBase } from "../models/base/ship-base.js";
 import { Canvas } from "../ui/canvas.js";
 
-export class Helper {
-  private static instance: Helper;
+export class CollisionCalculator {
+  private static instance: CollisionCalculator;
 
   private canvas: Canvas;
 
@@ -44,9 +44,9 @@ export class Helper {
   }
 
   static getInstance() {
-    if (!Helper.instance) {
-      Helper.instance = new Helper();
+    if (!CollisionCalculator.instance) {
+      CollisionCalculator.instance = new CollisionCalculator();
     }
-    return Helper.instance
+    return CollisionCalculator.instance
   }
 }

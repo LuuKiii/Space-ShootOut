@@ -8,6 +8,7 @@ export abstract class ShipBase {
   protected accelerationModifier: number = 0;
   protected health: number = 0;
   protected angle: number = 0;
+  protected resourcesLoaded = false;
 
 
   abstract get x(): number;

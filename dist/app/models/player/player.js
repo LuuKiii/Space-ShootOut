@@ -1,15 +1,20 @@
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
-import { Helper } from "../../utils/helpers.js";
-import { ShipBase } from "../shipBase.js";
+import { CollisionCalculator } from "../../utils/collision-calculator.js";
+import { ShipBase } from "../base/ship-base.js";
 export class Player extends ShipBase {
     constructor(x, y) {
         super();
+        this.image = new Image();
         this.canvas = Canvas.getInstance();
         this.canvasEvents = CanvasEvents.getInstance();
-        this.helper = Helper.getInstance();
+        this.collision = CollisionCalculator.getInstance();
         this.init(x, y);
     }
     init(x, y) {
+        this.image.onload = () => {
+            this.resourcesLoaded = true;
+        };
+        this.image.src = "/assets/Player.png";
         this._x = x;
         this._y = y;
         this.health = 100;
@@ -18,29 +23,32 @@ export class Player extends ShipBase {
         this.accelerationModifier = 0.05;
     }
     draw() {
-        this.canvas.context.beginPath();
-        this.canvas.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        this.canvas.context.stroke();
+        this.canvas.context.save();
+        this.canvas.context.translate(this.x, this.y);
+        this.canvas.context.rotate(this.angle);
+        this.canvas.context.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius);
+        this.canvas.context.restore();
     }
     update() {
         this.calculateMovement();
         this._x += this.dx;
         this._y += this.dy;
+        this.angle = Math.atan2(this.canvasEvents.mouse.x - this.x, -(this.canvasEvents.mouse.y - this.y));
     }
     calculateMovement() {
-        if (this.canvasEvents.keyboard["ArrowUp"]) {
+        if (this.canvasEvents.keyboard["w"]) {
             this.dy -= this.accelerationModifier;
         }
-        if (this.canvasEvents.keyboard["ArrowDown"]) {
+        if (this.canvasEvents.keyboard["s"]) {
             this.dy += this.accelerationModifier;
         }
-        if (this.canvasEvents.keyboard["ArrowLeft"]) {
+        if (this.canvasEvents.keyboard["a"]) {
             this.dx -= this.accelerationModifier;
         }
-        if (this.canvasEvents.keyboard["ArrowRight"]) {
+        if (this.canvasEvents.keyboard["d"]) {
             this.dx += this.accelerationModifier;
         }
-        if (!this.helper.isWholeInbouds(this)) {
+        if (!this.collision.isWholeInbouds(this)) {
             this._x -= this.dx;
             this._y -= this.dy;
             this.dx = -this.dx / 4;

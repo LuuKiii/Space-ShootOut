@@ -1,5 +1,5 @@
 import { Player } from "../models/player/player.js";
-import { ShipBase } from "../models/shipBase.js";
+import { ShipBase } from "../models/base/ship-base.js";
 import { Canvas } from "../ui/canvas.js";
 
 export class GameCore {
