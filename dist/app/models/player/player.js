@@ -8,6 +8,7 @@ export class Player extends ShipBase {
         this.canvas = Canvas.getInstance();
         this.canvasEvents = CanvasEvents.getInstance();
         this.collision = CollisionCalculator.getInstance();
+        this.canvasEvents.register(this);
         this.init(x, y);
     }
     init(x, y) {
@@ -54,6 +55,10 @@ export class Player extends ShipBase {
             this.dx = -this.dx / 4;
             this.dy = -this.dy / 4;
         }
+    }
+    updateFromSubject() {
+        const mouse = this.canvasEvents.mouse.button;
+        console.log(mouse);
     }
     get x() {
         return this._x;

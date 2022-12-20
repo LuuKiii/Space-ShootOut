@@ -1,8 +1,9 @@
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
+import { Observer } from "../../utils/observer.js";
 import { ShipBase } from "../base/ship-base.js";
 
-export class Player extends ShipBase {
+export class Player extends ShipBase implements Observer {
   readonly canvas: Canvas;
   readonly canvasEvents: CanvasEvents;
   readonly collision: CollisionCalculator;
@@ -15,6 +16,7 @@ export class Player extends ShipBase {
     this.canvas = Canvas.getInstance();
     this.canvasEvents = CanvasEvents.getInstance();
     this.collision = CollisionCalculator.getInstance();
+    this.canvasEvents.register(this);
 
     this.init(x, y);
   }
@@ -70,6 +72,11 @@ export class Player extends ShipBase {
       this.dx = -this.dx / 4;
       this.dy = -this.dy / 4;
     }
+  }
+
+  updateFromSubject(): void {
+    const mouse = this.canvasEvents.mouse.button;
+    console.log(mouse)
   }
 
   get x() {
