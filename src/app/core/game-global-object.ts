@@ -1,7 +1,7 @@
 import { Player } from "../models/player/player.js";
-import { BaseShip } from "../models/base/ship-base.js";
+import { BaseEntity } from "../models/base/base-entity.js";
 import { Canvas } from "../ui/canvas.js";
-import { BaseProjectile } from "../models/base/projectile-base.js";
+import { BaseProjectile } from "../models/base/base-projectile.js";
 
 export class GameGlobalObject {
   private static instance: GameGlobalObject;
@@ -12,7 +12,7 @@ export class GameGlobalObject {
     const canvas = Canvas.getInstance();
 
     this.core = {
-      player: [new Player(canvas.WIDTH / 2, canvas.HEIGHT / 2)],
+      player: [new Player({ x: canvas.WIDTH / 2, y: canvas.HEIGHT / 2 })],
       enemies: [],
       projectiles: [],
       misc: [],
@@ -38,7 +38,7 @@ export class GameGlobalObject {
 
 interface Core {
   player: [Player];
-  enemies: BaseShip[];
+  enemies: BaseEntity[];
   projectiles: BaseProjectile[];
-  misc: BaseShip[];
+  misc: BaseEntity[];
 }

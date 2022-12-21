@@ -4,7 +4,7 @@ export class GameGlobalObject {
     constructor() {
         const canvas = Canvas.getInstance();
         this.core = {
-            player: [new Player(canvas.WIDTH / 2, canvas.HEIGHT / 2)],
+            player: [new Player({ x: canvas.WIDTH / 2, y: canvas.HEIGHT / 2 })],
             enemies: [],
             projectiles: [],
             misc: [],

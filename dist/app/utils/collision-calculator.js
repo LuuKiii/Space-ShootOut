@@ -1,43 +1,37 @@
 import { Canvas } from "../ui/canvas.js";
 export class CollisionCalculator {
-    constructor() {
-        this.canvas = Canvas.getInstance();
-    }
-    isWholeInbouds(ship) {
-        if (ship.x - ship.radius < 0) {
+    constructor() { }
+    static isWholeInbouds(obj) {
+        if (obj.x - obj.radius < 0) {
             return false;
         }
-        if (ship.x + ship.radius > this.canvas.WIDTH) {
+        if (obj.x + obj.radius > CollisionCalculator.canvas.WIDTH) {
             return false;
         }
-        if (ship.y + ship.radius > this.canvas.HEIGHT) {
+        if (obj.y + obj.radius > CollisionCalculator.canvas.HEIGHT) {
             return false;
         }
-        if (ship.y - ship.radius < 0) {
-            return false;
-        }
-        return true;
-    }
-    isWholeOutOfBounds(ship) {
-        if (ship.x + ship.radius < 0) {
-            return false;
-        }
-        if (ship.x - ship.radius > this.canvas.WIDTH) {
-            return false;
-        }
-        if (ship.y - ship.radius > this.canvas.HEIGHT) {
-            return false;
-        }
-        if (ship.y + ship.radius < 0) {
+        if (obj.y - obj.radius < 0) {
             return false;
         }
         return true;
     }
-    static getInstance() {
-        if (!CollisionCalculator.instance) {
-            CollisionCalculator.instance = new CollisionCalculator();
+    static isWholeOutOfBounds(obj) {
+        if (obj.x + obj.radius < 0) {
+            return false;
         }
-        return CollisionCalculator.instance;
+        if (obj.x - obj.radius > CollisionCalculator.canvas.WIDTH) {
+            return false;
+        }
+        if (obj.y - obj.radius > CollisionCalculator.canvas.HEIGHT) {
+            return false;
+        }
+        if (obj.y + obj.radius < 0) {
+            return false;
+        }
+        return true;
     }
 }
+// private static instance: CollisionCalculator;
+CollisionCalculator.canvas = Canvas.getInstance();
 //# sourceMappingURL=collision-calculator.js.map

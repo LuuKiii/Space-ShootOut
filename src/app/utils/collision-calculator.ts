@@ -1,52 +1,48 @@
-import { BaseShip } from "../models/base/ship-base.js";
 import { Canvas } from "../ui/canvas.js";
 
 export class CollisionCalculator {
-  private static instance: CollisionCalculator;
+  // private static instance: CollisionCalculator;
+  private static canvas = Canvas.getInstance();
 
-  private canvas: Canvas;
+  private constructor() { }
 
-  private constructor() {
-    this.canvas = Canvas.getInstance();
-  }
-
-  isWholeInbouds(ship: BaseShip): boolean {
-    if (ship.x - ship.radius < 0) {
+  static isWholeInbouds(obj: { x: number, y: number, radius: number }): boolean {
+    if (obj.x - obj.radius < 0) {
       return false;
     }
-    if (ship.x + ship.radius > this.canvas.WIDTH) {
+    if (obj.x + obj.radius > CollisionCalculator.canvas.WIDTH) {
       return false;
     }
-    if (ship.y + ship.radius > this.canvas.HEIGHT) {
+    if (obj.y + obj.radius > CollisionCalculator.canvas.HEIGHT) {
       return false;
     }
-    if (ship.y - ship.radius < 0) {
+    if (obj.y - obj.radius < 0) {
       return false;
     }
     return true;
   }
 
-  isWholeOutOfBounds(ship: BaseShip): boolean {
-    if (ship.x + ship.radius < 0) {
+  static isWholeOutOfBounds(obj: { x: number, y: number, radius: number }): boolean {
+    if (obj.x + obj.radius < 0) {
       return false;
     }
-    if (ship.x - ship.radius > this.canvas.WIDTH) {
+    if (obj.x - obj.radius > CollisionCalculator.canvas.WIDTH) {
       return false;
     }
-    if (ship.y - ship.radius > this.canvas.HEIGHT) {
+    if (obj.y - obj.radius > CollisionCalculator.canvas.HEIGHT) {
       return false;
     }
-    if (ship.y + ship.radius < 0) {
+    if (obj.y + obj.radius < 0) {
       return false;
     }
 
     return true;
   }
 
-  static getInstance() {
-    if (!CollisionCalculator.instance) {
-      CollisionCalculator.instance = new CollisionCalculator();
-    }
-    return CollisionCalculator.instance
-  }
+  // static getInstance() {
+  //   if (!CollisionCalculator.instance) {
+  //     CollisionCalculator.instance = new CollisionCalculator();
+  //   }
+  //   return CollisionCalculator.instance
+  // }
 }

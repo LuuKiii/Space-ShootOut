@@ -1,4 +1,6 @@
 export class BaseProjectile {
-    constructor() { }
+    constructor() {
+        this.isOutOfBounds = false;
+    }
 }
 //# sourceMappingURL=projectile-base.js.map

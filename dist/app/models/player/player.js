@@ -1,23 +1,21 @@
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
-import { BaseShip } from "../base/ship-base.js";
-export class Player extends BaseShip {
-    constructor(x, y) {
+import { BaseEntity } from "../base/base-entity.js";
+export class Player extends BaseEntity {
+    constructor(pos) {
         super();
         this.image = new Image();
         this.canvas = Canvas.getInstance();
         this.canvasEvents = CanvasEvents.getInstance();
-        this.collision = CollisionCalculator.getInstance();
-        this.init(x, y);
+        this._position = Object.assign({}, pos);
+        this.init();
     }
-    init(x, y) {
+    init() {
         this.image.onload = () => {
             this.resourcesLoaded = true;
         };
         this.image.src = "/assets/Player.png";
-        this._x = x;
-        this._y = y;
         this.health = 100;
         this._radius = 30;
         this.maxSpeed = 3;
@@ -25,42 +23,42 @@ export class Player extends BaseShip {
     }
     draw() {
         this.canvas.context.save();
-        this.canvas.context.translate(this.x, this.y);
+        this.canvas.context.translate(this.position.x, this.position.y);
         this.canvas.context.rotate(this.angle);
         this.canvas.context.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius);
         this.canvas.context.restore();
     }
     update() {
         this.calculateMovement();
-        this._x += this.dx;
-        this._y += this.dy;
-        this.angle = Helper.calculateRotateAngle(this, this.canvasEvents.mouse);
+        this._position.x += this.delta.x;
+        this._position.y += this.delta.y;
+        this.angle = Helper.calculateRotateAngle(this.position, this.canvasEvents.mouse);
     }
     calculateMovement() {
         if (this.canvasEvents.keyboard["w"]) {
-            this.dy -= this.accelerationModifier;
+            this._delta.y -= this.accelerationModifier;
         }
         if (this.canvasEvents.keyboard["s"]) {
-            this.dy += this.accelerationModifier;
+            this._delta.y += this.accelerationModifier;
         }
         if (this.canvasEvents.keyboard["a"]) {
-            this.dx -= this.accelerationModifier;
+            this._delta.x -= this.accelerationModifier;
         }
         if (this.canvasEvents.keyboard["d"]) {
-            this.dx += this.accelerationModifier;
+            this._delta.x += this.accelerationModifier;
         }
-        if (!this.collision.isWholeInbouds(this)) {
-            this._x -= this.dx;
-            this._y -= this.dy;
-            this.dx = -this.dx / 4;
-            this.dy = -this.dy / 4;
+        if (!CollisionCalculator.isWholeInbouds(Object.assign(Object.assign({}, this.position), { radius: this.radius }))) {
+            this._position.x -= this.delta.x;
+            this._position.y -= this.delta.y;
+            this._delta.x = -this.delta.x / 4;
+            this._delta.y = -this.delta.y / 4;
         }
     }
-    get x() {
-        return this._x;
+    get position() {
+        return Object.assign({}, this._position);
     }
-    get y() {
-        return this._y;
+    get delta() {
+        return Object.assign({}, this._delta);
     }
     get radius() {
         return this._radius;
