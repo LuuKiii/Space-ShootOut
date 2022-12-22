@@ -3,6 +3,7 @@ export class BaseEntity {
         this._position = { x: 0, y: 0 };
         this._delta = { x: 0, y: 0 };
         this._radius = 0;
+        this._isToBeRemoved = false;
     }
     get id() {
         if (this._id) {
@@ -17,6 +18,9 @@ export class BaseEntity {
         else {
             throw new Error("Cannot overwrite existing id");
         }
+    }
+    get isToBeRemoved() {
+        return this._isToBeRemoved;
     }
 }
 //# sourceMappingURL=base-entity.js.map

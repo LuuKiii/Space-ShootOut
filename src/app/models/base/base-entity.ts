@@ -3,7 +3,7 @@ export abstract class BaseEntity {
   protected _position: Point = { x: 0, y: 0 };
   protected _delta: Vector = { x: 0, y: 0 };
   protected _radius: number = 0;
-
+  protected _isToBeRemoved: boolean = false;
 
   get id() {
     if (this._id) {
@@ -18,6 +18,10 @@ export abstract class BaseEntity {
     } else {
       throw new Error("Cannot overwrite existing id");
     }
+  }
+
+  get isToBeRemoved() {
+    return this._isToBeRemoved;
   }
 
   protected abstract ctx: CanvasRenderingContext2D;

@@ -23,18 +23,18 @@ export class CollisionCalculator {
 
   static isWholeOutOfBounds(obj: { x: number, y: number, radius: number }): boolean {
     if (obj.x + obj.radius < 0) {
-      return false;
+      return true;
     }
     if (obj.x - obj.radius > CollisionCalculator.canvasDimensions.width) {
-      return false;
+      return true;
     }
     if (obj.y - obj.radius > CollisionCalculator.canvasDimensions.height) {
-      return false;
+      return true;
     }
     if (obj.y + obj.radius < 0) {
-      return false;
+      return true;
     }
 
-    return true;
+    return false;
   }
 }

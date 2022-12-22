@@ -30,7 +30,7 @@ export class SingleFire extends BaseProjectile {
     this._position.y = this.position.y + this.delta.y;
 
     if (CollisionCalculator.isWholeOutOfBounds({ ...this.position, radius: this.radius })) {
-      this.isOutOfBounds = true;
+      this._isToBeRemoved = true;
     }
   }
 

@@ -40,6 +40,9 @@ export class GameGlobalObject {
                 const entity = coreObj[entityId];
                 entity.update();
                 entity.draw();
+                if (entity.isToBeRemoved) {
+                    this.removeEntityFrom(coreProp, entity.id);
+                }
             }
         }
     }
