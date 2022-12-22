@@ -1,8 +1,8 @@
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
-import { BaseEntity } from "../base/base-entity.js";
-export class Player extends BaseEntity {
+import { BaseShip } from "../base/base-ship.js";
+export class Player extends BaseShip {
     constructor(pos) {
         super();
         this.image = new Image();

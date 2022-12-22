@@ -2,8 +2,9 @@ import { Canvas, CanvasEvents, MouseButtons } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
 import { BaseEntity, Point } from "../base/base-entity.js";
+import { BaseShip } from "../base/base-ship.js";
 
-export class Player extends BaseEntity {
+export class Player extends BaseShip {
   readonly canvas: Canvas;
   readonly canvasEvents: CanvasEvents;
 

@@ -4,8 +4,8 @@ import { Helper } from "../utils/helper.js";
 import { GameGlobalObject } from "./game-global-object.js";
 export class PlayerWeaponHandler {
     constructor() {
-        this.core = GameGlobalObject.getInstance().core;
-        this.player = this.core.player[0];
+        this.globalObj = GameGlobalObject.getInstance();
+        this.player = this.globalObj.core.player.a;
         this.canvasEvents = CanvasEvents.getInstance();
         this.canvasEvents.register(this);
     }
@@ -13,7 +13,7 @@ export class PlayerWeaponHandler {
         const angle = Helper.calculateAngle(this.player.position, this.canvasEvents.mouse);
         const { dx, dy } = Helper.calculateVelocity(angle, 0);
         const newProjectile = new SingleFire({ x: this.player.position.x, y: this.player.position.y }, { x: dx, y: dy });
-        this.core.projectiles.push(newProjectile);
+        this.globalObj.addEntity('projectiles', newProjectile);
     }
     updateFromSubject() {
         const mouse = this.canvasEvents.mouse.button;

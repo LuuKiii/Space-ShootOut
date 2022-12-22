@@ -1,0 +1,1 @@
+{"version":3,"file":"base-ship.js","sourceRoot":"","sources":["../../../../src/app/models/base/base-ship.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,kBAAkB,CAAC;AAE9C,MAAM,OAAgB,QAAS,SAAQ,UAAU;IAAjD;;QACY,aAAQ,GAAW,CAAC,CAAC;QACrB,yBAAoB,GAAW,CAAC,CAAC;QACjC,WAAM,GAAW,CAAC,CAAC;QACnB,UAAK,GAAW,CAAC,CAAC;QAClB,oBAAe,GAAG,KAAK,CAAC;IACpC,CAAC;CAAA"}

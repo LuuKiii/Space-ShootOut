@@ -7,8 +7,8 @@ import { GameGlobalObject } from "./game-global-object.js";
 export class PlayerWeaponHandler implements Observer {
   static instance: PlayerWeaponHandler;
 
-  private core = GameGlobalObject.getInstance().core;
-  private player = this.core.player[0];
+  private globalObj = GameGlobalObject.getInstance();
+  private player = this.globalObj.core.player.a;
 
   private canvasEvents = CanvasEvents.getInstance();
 
@@ -19,8 +19,8 @@ export class PlayerWeaponHandler implements Observer {
   fire() {
     const angle = Helper.calculateAngle(this.player.position, this.canvasEvents.mouse)
     const { dx, dy } = Helper.calculateVelocity(angle, 0);
-    const newProjectile = new SingleFire({x: this.player.position.x, y: this.player.position.y}, {x: dx,y: dy})
-    this.core.projectiles.push(newProjectile)
+    const newProjectile = new SingleFire({ x: this.player.position.x, y: this.player.position.y }, { x: dx, y: dy })
+    this.globalObj.addEntity('projectiles', newProjectile);
   }
 
   updateFromSubject(): void {

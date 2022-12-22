@@ -37,7 +37,7 @@ class App {
 
   animate() {
     this.renderBg.drawBackground();
-    this.globalObj.updateAndDrawAllObjects();
+    this.globalObj.updateAndDrawAllEntities();
 
     requestAnimationFrame(this.animate.bind(this))
   }
