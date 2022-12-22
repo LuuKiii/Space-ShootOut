@@ -4,9 +4,9 @@ import { Helper } from "../utils/helper.js";
 import { GameGlobalObject } from "./game-global-object.js";
 export class PlayerWeaponHandler {
     constructor() {
+        this.canvasEvents = CanvasEvents.getInstance();
         this.globalObj = GameGlobalObject.getInstance();
         this.player = this.globalObj.getPlayer();
-        this.canvasEvents = CanvasEvents.getInstance();
         this.canvasEvents.register(this);
     }
     fire() {

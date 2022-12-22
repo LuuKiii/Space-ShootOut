@@ -7,10 +7,9 @@ import { GameGlobalObject } from "./game-global-object.js";
 export class PlayerWeaponHandler implements Observer {
   static instance: PlayerWeaponHandler;
 
+  private canvasEvents = CanvasEvents.getInstance();
   private globalObj = GameGlobalObject.getInstance();
   private player = this.globalObj.getPlayer();
-
-  private canvasEvents = CanvasEvents.getInstance();
 
   private constructor() {
     this.canvasEvents.register(this)

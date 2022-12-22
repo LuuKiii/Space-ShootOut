@@ -5,10 +5,10 @@ export class CollisionCalculator {
         if (obj.x - obj.radius < 0) {
             return false;
         }
-        if (obj.x + obj.radius > CollisionCalculator.canvas.WIDTH) {
+        if (obj.x + obj.radius > CollisionCalculator.canvasDimensions.width) {
             return false;
         }
-        if (obj.y + obj.radius > CollisionCalculator.canvas.HEIGHT) {
+        if (obj.y + obj.radius > CollisionCalculator.canvasDimensions.height) {
             return false;
         }
         if (obj.y - obj.radius < 0) {
@@ -20,10 +20,10 @@ export class CollisionCalculator {
         if (obj.x + obj.radius < 0) {
             return false;
         }
-        if (obj.x - obj.radius > CollisionCalculator.canvas.WIDTH) {
+        if (obj.x - obj.radius > CollisionCalculator.canvasDimensions.width) {
             return false;
         }
-        if (obj.y - obj.radius > CollisionCalculator.canvas.HEIGHT) {
+        if (obj.y - obj.radius > CollisionCalculator.canvasDimensions.height) {
             return false;
         }
         if (obj.y + obj.radius < 0) {
@@ -32,6 +32,5 @@ export class CollisionCalculator {
         return true;
     }
 }
-// private static instance: CollisionCalculator;
-CollisionCalculator.canvas = Canvas.getInstance();
+CollisionCalculator.canvasDimensions = Canvas.getDimensions();
 //# sourceMappingURL=collision-calculator.js.map

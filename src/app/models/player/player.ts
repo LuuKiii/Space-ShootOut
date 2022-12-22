@@ -1,11 +1,11 @@
-import { Canvas, CanvasEvents, MouseButtons } from "../../ui/canvas.js";
+import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
-import { BaseEntity, Point } from "../base/base-entity.js";
+import { Point } from "../base/base-entity.js";
 import { BaseShip } from "../base/base-ship.js";
 
 export class Player extends BaseShip {
-  readonly canvas: Canvas;
+  protected ctx: CanvasRenderingContext2D;
   readonly canvasEvents: CanvasEvents;
 
   private readonly image = new Image();
@@ -13,7 +13,7 @@ export class Player extends BaseShip {
 
   constructor(pos: Point) {
     super();
-    this.canvas = Canvas.getInstance();
+    this.ctx = Canvas.getContext();
     this.canvasEvents = CanvasEvents.getInstance();
 
     this._position = { ...pos }
@@ -33,11 +33,11 @@ export class Player extends BaseShip {
   }
 
   draw(): void {
-    this.canvas.context.save();
-    this.canvas.context.translate(this.position.x, this.position.y)
-    this.canvas.context.rotate(this.angle);
-    this.canvas.context.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius)
-    this.canvas.context.restore();
+    this.ctx.save();
+    this.ctx.translate(this.position.x, this.position.y)
+    this.ctx.rotate(this.angle);
+    this.ctx.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius)
+    this.ctx.restore();
   }
 
   update(): void {

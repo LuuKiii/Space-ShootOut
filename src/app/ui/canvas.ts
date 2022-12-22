@@ -6,16 +6,28 @@ export class Canvas {
   readonly element: HTMLCanvasElement;
   readonly context: CanvasRenderingContext2D;
   readonly boundingRect: DOMRect;
-  readonly WIDTH: number;
-  readonly HEIGHT: number;
+  readonly width: number;
+  readonly height: number;
 
   private constructor() {
     this.element = document.querySelector("#main__canvas")! as HTMLCanvasElement;
     this.context = this.element.getContext('2d')!;
     this.boundingRect = this.element.getBoundingClientRect();
 
-    this.WIDTH = this.element.width = 800;
-    this.HEIGHT = this.element.height = 600;
+    this.width = this.element.width = 800;
+    this.height = this.element.height = 600;
+  }
+
+  static getContext() {
+    this.getInstance()
+
+    return this.instance.context;
+  }
+
+  static getDimensions() {
+    this.getInstance();
+
+    return { width: this.instance.width, height: this.instance.height };
   }
 
   static getInstance() {

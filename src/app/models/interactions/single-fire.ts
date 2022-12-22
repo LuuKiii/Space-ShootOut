@@ -4,11 +4,11 @@ import { Point, Vector } from "../base/base-entity.js";
 import { BaseProjectile } from "../base/base-projectile.js";
 
 export class SingleFire extends BaseProjectile {
-  private canvas: Canvas;
+  protected ctx: CanvasRenderingContext2D;
 
   constructor(pos: Point, velocity: Vector) {
     super();
-    this.canvas = Canvas.getInstance();
+    this.ctx = Canvas.getContext();
 
     this._position = { ...pos };
     this._delta = { ...velocity };
@@ -20,9 +20,9 @@ export class SingleFire extends BaseProjectile {
   }
 
   draw() {
-    this.canvas.context.beginPath();
-    this.canvas.context.arc(this.position.x, this.position.y, this._radius, 0, Math.PI * 2)
-    this.canvas.context.fill();
+    this.ctx.beginPath();
+    this.ctx.arc(this.position.x, this.position.y, this._radius, 0, Math.PI * 2)
+    this.ctx.fill();
   }
 
   update() {

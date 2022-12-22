@@ -6,7 +6,7 @@ export class Player extends BaseShip {
     constructor(pos) {
         super();
         this.image = new Image();
-        this.canvas = Canvas.getInstance();
+        this.ctx = Canvas.getContext();
         this.canvasEvents = CanvasEvents.getInstance();
         this._position = Object.assign({}, pos);
         this.init();
@@ -22,11 +22,11 @@ export class Player extends BaseShip {
         this.accelerationModifier = 0.05;
     }
     draw() {
-        this.canvas.context.save();
-        this.canvas.context.translate(this.position.x, this.position.y);
-        this.canvas.context.rotate(this.angle);
-        this.canvas.context.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius);
-        this.canvas.context.restore();
+        this.ctx.save();
+        this.ctx.translate(this.position.x, this.position.y);
+        this.ctx.rotate(this.angle);
+        this.ctx.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius);
+        this.ctx.restore();
     }
     update() {
         this.calculateMovement();

@@ -20,6 +20,7 @@ export abstract class BaseEntity {
     }
   }
 
+  protected abstract ctx: CanvasRenderingContext2D;
   abstract get position(): Point;
   abstract get delta(): Vector;
   abstract get radius(): number;

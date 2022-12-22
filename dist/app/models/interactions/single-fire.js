@@ -4,7 +4,7 @@ import { BaseProjectile } from "../base/base-projectile.js";
 export class SingleFire extends BaseProjectile {
     constructor(pos, velocity) {
         super();
-        this.canvas = Canvas.getInstance();
+        this.ctx = Canvas.getContext();
         this._position = Object.assign({}, pos);
         this._delta = Object.assign({}, velocity);
         this.init();
@@ -13,9 +13,9 @@ export class SingleFire extends BaseProjectile {
         this._radius = 10;
     }
     draw() {
-        this.canvas.context.beginPath();
-        this.canvas.context.arc(this.position.x, this.position.y, this._radius, 0, Math.PI * 2);
-        this.canvas.context.fill();
+        this.ctx.beginPath();
+        this.ctx.arc(this.position.x, this.position.y, this._radius, 0, Math.PI * 2);
+        this.ctx.fill();
     }
     update() {
         this._position.x = this.position.x + this.delta.x;
