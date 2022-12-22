@@ -5,7 +5,7 @@ import { GameGlobalObject } from "./game-global-object.js";
 export class PlayerWeaponHandler {
     constructor() {
         this.globalObj = GameGlobalObject.getInstance();
-        this.player = this.globalObj.core.player.a;
+        this.player = this.globalObj.getPlayer();
         this.canvasEvents = CanvasEvents.getInstance();
         this.canvasEvents.register(this);
     }

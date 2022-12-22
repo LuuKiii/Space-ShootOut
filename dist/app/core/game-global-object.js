@@ -3,13 +3,25 @@ import { Canvas } from "../ui/canvas.js";
 import { Helper } from "../utils/helper.js";
 export class GameGlobalObject {
     constructor() {
-        const canvas = Canvas.getInstance();
+        this._size = 0;
+        this.canvas = Canvas.getInstance();
         this.core = {
-            player: { a: new Player({ x: canvas.WIDTH / 2, y: canvas.HEIGHT / 2 }) },
+            player: {},
             enemies: {},
             projectiles: {},
             misc: {},
         };
+        this.createPlayer();
+    }
+    //TODO Instead of this aproach change in core object player object type to enforce it to have at most one property 
+    createPlayer() {
+        if (Object.keys(this.core.player).length > 0)
+            throw new Error("Player Already exists");
+        const player = new Player({ x: this.canvas.WIDTH / 2, y: this.canvas.HEIGHT / 2 });
+        this.addEntity('player', player);
+    }
+    getPlayer() {
+        return this.core.player[Object.keys(this.core.player)[0]];
     }
     updateAndDrawAllEntities() {
         for (const coreProp in this.core) {
@@ -21,12 +33,18 @@ export class GameGlobalObject {
             }
         }
     }
-    removeEntity(from, id) {
+    removeEntityFrom(from, id) {
+        this._size--;
+        delete this.core[from][id];
     }
     addEntity(coreKey, entity) {
         const generatedID = Helper.generateID();
         entity.id = generatedID;
+        this._size++;
         this.core[coreKey][generatedID] = entity;
+    }
+    get size() {
+        return this._size;
     }
     static getInstance() {
         if (!GameGlobalObject.instance) {

@@ -10,19 +10,34 @@ export class GameGlobalObject {
 
   //TODO: CHANGE TO PRIVATE, DEEP CLONING NEEDS TO BE IMPLEMENTED
   readonly core: Core;
+  private _size: number = 0;
+
+  private canvas = Canvas.getInstance();
 
   private constructor() {
-    const canvas = Canvas.getInstance();
-
     this.core = {
-      player: { a: new Player({ x: canvas.WIDTH / 2, y: canvas.HEIGHT / 2 }) },
+      player: {},
       enemies: {},
       projectiles: {},
       misc: {},
     }
+
+    this.createPlayer();
   }
 
-  updateAndDrawAllEntities() {
+  //TODO Instead of this aproach change in core object player object type to enforce it to have at most one property 
+  private createPlayer() {
+    if (Object.keys(this.core.player).length > 0) throw new Error("Player Already exists");
+
+    const player = new Player({ x: this.canvas.WIDTH / 2, y: this.canvas.HEIGHT / 2 })
+    this.addEntity('player', player);
+  }
+
+  getPlayer(): Player {
+    return this.core.player[Object.keys(this.core.player)[0]];
+  }
+
+  updateAndDrawAllEntities(): void {
     for (const coreProp in this.core) {
       const coreObj = this.core[coreProp as keyof typeof this.core]
       for (const entityId in coreObj) {
@@ -33,14 +48,20 @@ export class GameGlobalObject {
     }
   }
 
-  removeEntity(from: keyof Core, id: string) {
-
+  removeEntityFrom(from: keyof Core, id: string) {
+    this._size--;
+    delete this.core[from][id];
   }
 
   addEntity<CoreProperty extends keyof Core, InnerProperty extends keyof Core[CoreProperty]>(coreKey: CoreProperty, entity: Core[CoreProperty][InnerProperty]): void {
     const generatedID: string = Helper.generateID();
     entity.id = generatedID;
+    this._size++;
     this.core[coreKey][generatedID] = entity;
+  }
+
+  get size() {
+    return this._size;
   }
 
   static getInstance() {
@@ -65,5 +86,3 @@ interface Core {
     [key: string]: BaseShip;
   };
 }
-
-

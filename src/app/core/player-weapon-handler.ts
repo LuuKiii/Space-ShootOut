@@ -8,7 +8,7 @@ export class PlayerWeaponHandler implements Observer {
   static instance: PlayerWeaponHandler;
 
   private globalObj = GameGlobalObject.getInstance();
-  private player = this.globalObj.core.player.a;
+  private player = this.globalObj.getPlayer();
 
   private canvasEvents = CanvasEvents.getInstance();
 
