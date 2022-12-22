@@ -1,3 +1,5 @@
+import { OriginAndRadius } from "../../utils/collision-calculator";
+
 export abstract class BaseEntity {
   private _id: string | undefined;
   protected _position: Point = { x: 0, y: 0 };
@@ -22,6 +24,10 @@ export abstract class BaseEntity {
 
   get isToBeRemoved() {
     return this._isToBeRemoved;
+  }
+
+  get originAndRadius(): OriginAndRadius {
+    return { id: this.id, x: this.position.x, y: this.position.y, radius: this.radius }
   }
 
   protected abstract ctx: CanvasRenderingContext2D;

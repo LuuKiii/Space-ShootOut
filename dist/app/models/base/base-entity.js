@@ -22,5 +22,8 @@ export class BaseEntity {
     get isToBeRemoved() {
         return this._isToBeRemoved;
     }
+    get originAndRadius() {
+        return { id: this.id, x: this.position.x, y: this.position.y, radius: this.radius };
+    }
 }
 //# sourceMappingURL=base-entity.js.map

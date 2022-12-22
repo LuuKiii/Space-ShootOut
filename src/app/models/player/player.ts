@@ -1,5 +1,5 @@
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
-import { CollisionCalculator } from "../../utils/collision-calculator.js";
+import { CollisionCalculator, OriginAndRadius } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
 import { Point } from "../base/base-entity.js";
 import { BaseShip } from "../base/base-ship.js";
@@ -47,6 +47,7 @@ export class Player extends BaseShip {
     this._position.y += this.delta.y;
 
     this.angle = Helper.calculateRotateAngle(this.position, this.canvasEvents.mouse)
+    // CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['player'])
   }
 
   calculateMovement() {
@@ -63,7 +64,7 @@ export class Player extends BaseShip {
       this._delta.x += this.accelerationModifier;
     }
 
-    if (!CollisionCalculator.isWholeInbouds({ ...this.position, radius: this.radius })) {
+    if (!CollisionCalculator.isWholeInbouds(this.originAndRadius)) {
       this._position.x -= this.delta.x;
       this._position.y -= this.delta.y;
       this._delta.x = -this.delta.x / 4;

@@ -19,7 +19,7 @@ export class PlayerWeaponHandler implements Observer {
     const angle = Helper.calculateAngle(this.player.position, this.canvasEvents.mouse)
     const { dx, dy } = Helper.calculateVelocity(angle, 0);
     const newProjectile = new SingleFire({ x: this.player.position.x, y: this.player.position.y }, { x: dx, y: dy })
-    this.globalObj.addEntity('projectiles', newProjectile);
+    this.globalObj.addEntity('playerWeaponry', newProjectile);
   }
 
   updateFromSubject(): void {

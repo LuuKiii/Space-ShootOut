@@ -33,6 +33,7 @@ export class Player extends BaseShip {
         this._position.x += this.delta.x;
         this._position.y += this.delta.y;
         this.angle = Helper.calculateRotateAngle(this.position, this.canvasEvents.mouse);
+        // CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['player'])
     }
     calculateMovement() {
         if (this.canvasEvents.keyboard["w"]) {
@@ -47,7 +48,7 @@ export class Player extends BaseShip {
         if (this.canvasEvents.keyboard["d"]) {
             this._delta.x += this.accelerationModifier;
         }
-        if (!CollisionCalculator.isWholeInbouds(Object.assign(Object.assign({}, this.position), { radius: this.radius }))) {
+        if (!CollisionCalculator.isWholeInbouds(this.originAndRadius)) {
             this._position.x -= this.delta.x;
             this._position.y -= this.delta.y;
             this._delta.x = -this.delta.x / 4;

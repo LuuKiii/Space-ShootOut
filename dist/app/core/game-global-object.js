@@ -6,8 +6,9 @@ export class GameGlobalObject {
         this._size = 0;
         this._core = {
             player: {},
+            playerWeaponry: {},
             enemies: {},
-            projectiles: {},
+            enemyWeaponry: {},
             misc: {},
         };
         this.createPlayer();
@@ -45,6 +46,27 @@ export class GameGlobalObject {
                 }
             }
         }
+    }
+    static getEntitiesByCorePropertyName(corePropName) {
+        if (!GameGlobalObject.instance)
+            return [];
+        const corePropertiesToGet = [];
+        const returnArr = [];
+        for (const coreProp in GameGlobalObject.instance._core) {
+            if (corePropName && !corePropName.includes(coreProp)) {
+                continue;
+            }
+            corePropertiesToGet.push(coreProp);
+        }
+        for (const coreProp of corePropertiesToGet) {
+            const coreObj = GameGlobalObject.instance._core[coreProp];
+            for (const entityId in coreObj) {
+                const entity = coreObj[entityId];
+                returnArr.push(entity);
+            }
+        }
+        console.log(returnArr);
+        return returnArr;
     }
     get size() {
         return this._size;
