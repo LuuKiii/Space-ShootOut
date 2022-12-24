@@ -1,4 +1,4 @@
-import { SingleFire } from "../models/interactions/single-fire.js";
+import { SingleFire } from "../models/weaponry/single-fire.js";
 import { CanvasEvents } from "../ui/canvas.js";
 import { Helper } from "../utils/helper.js";
 import { GameGlobalObject } from "./game-global-object.js";
@@ -7,6 +7,7 @@ export class PlayerWeaponHandler {
         this.canvasEvents = CanvasEvents.getInstance();
         this.globalObj = GameGlobalObject.getInstance();
         this.player = this.globalObj.getPlayer();
+        this.onCooldown = false;
         this.canvasEvents.register(this);
     }
     fire() {
@@ -15,11 +16,22 @@ export class PlayerWeaponHandler {
         const newProjectile = new SingleFire({ x: this.player.position.x, y: this.player.position.y }, { x: dx, y: dy });
         this.globalObj.addEntity('playerWeaponry', newProjectile);
     }
+    //TODO Add button heldown 
     updateFromSubject() {
+        if (this.onCooldown)
+            return;
         const mouse = this.canvasEvents.mouse.button;
         if (mouse.LPM) {
             this.fire();
+            this.setCooldown(0.5);
         }
+    }
+    setCooldown(timeInSec) {
+        timeInSec *= 1000;
+        this.onCooldown = true;
+        setTimeout(() => {
+            this.onCooldown = false;
+        }, timeInSec);
     }
     static getInstance() {
         if (!PlayerWeaponHandler.instance) {

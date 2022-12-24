@@ -1,4 +1,4 @@
-import { SingleFire } from "../models/interactions/single-fire.js";
+import { SingleFire } from "../models/weaponry/single-fire.js";
 import { CanvasEvents } from "../ui/canvas.js";
 import { Helper } from "../utils/helper.js";
 import { Observer } from "../utils/observer.js";
@@ -10,6 +10,7 @@ export class PlayerWeaponHandler implements Observer {
   private canvasEvents = CanvasEvents.getInstance();
   private globalObj = GameGlobalObject.getInstance();
   private player = this.globalObj.getPlayer();
+  private onCooldown: boolean = false;
 
   private constructor() {
     this.canvasEvents.register(this)
@@ -22,12 +23,23 @@ export class PlayerWeaponHandler implements Observer {
     this.globalObj.addEntity('playerWeaponry', newProjectile);
   }
 
+  //TODO Add button heldown 
   updateFromSubject(): void {
+    if (this.onCooldown) return;
     const mouse = this.canvasEvents.mouse.button;
 
     if (mouse.LPM) {
       this.fire()
+      this.setCooldown(0.5)
     }
+  }
+
+  setCooldown(timeInSec: number) {
+    timeInSec *= 1000;
+    this.onCooldown = true;
+    setTimeout(() => {
+      this.onCooldown = false;
+    }, timeInSec);
   }
 
   static getInstance() {
