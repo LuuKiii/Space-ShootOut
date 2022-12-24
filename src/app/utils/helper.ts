@@ -1,3 +1,7 @@
+import { Point, Vector } from "../models/base/base-entity.js";
+import { Canvas } from "../ui/canvas.js";
+import { OriginAndRadius } from "./collision-calculator.js";
+
 export class Helper {
   static generateID() {
     let time = new Date().getTime();
@@ -8,18 +12,62 @@ export class Helper {
     })
   }
 
-  static calculateRotateAngle(objA: { x: number, y: number }, objB: { x: number, y: number }): number {
-    return Math.atan2(objB.x - objA.x, -(objB.y - objA.y))
+  static calculateRotationTowardsEntity(entity: Point, entityToFaceTowards: Point): number {
+    return Math.atan2(entityToFaceTowards.x - entity.x, -(entityToFaceTowards.y - entity.y))
   }
 
-  static calculateAngle(objA: { x: number, y: number }, objB: { x: number, y: number }): number {
+  static calculateRotationToFaceAwayEntity(entity: Point, entityToFaceAwayFrom: Point): number {
+    return Math.atan2(entity.x - entityToFaceAwayFrom.x, -(entity.y - entityToFaceAwayFrom.y))
+  }
+
+  static calculateAngle(objA: Point, objB: Point): number {
     return Math.atan2(objB.y - objA.y, objB.x - objA.x)
   }
 
-  static calculateVelocity(angle: number, speed: number) {
+  static calculateVelocity(angle: number, speed: number): Vector {
     return {
-      dx: Math.cos(angle),
-      dy: Math.sin(angle),
+      x: Math.cos(angle),
+      y: Math.sin(angle),
     }
   }
+
+  static calculateDistanceBetweenPoints(pointA: Point, pointB: Point): number {
+    const distanceBetweenOrigins = Math.sqrt(Math.pow(pointA.x - pointB.x, 2) + Math.pow(pointA.y - pointB.y, 2));
+
+    return distanceBetweenOrigins;
+  }
+
+  static getCoordinatesOutOfBounds(spaceAwayFromBorder: number = 0, side?: Side): Point {
+    if (side === undefined) {
+      side = Math.random() * 4 | 0;
+    }
+
+    const point: Point = { x: 0, y: 0 };
+    const canvasD = Canvas.getDimensions()
+
+    if (side % 2 === 1) {
+      point.y = Math.random() * canvasD.height | 0;
+      point.x = side === 1 ? spaceAwayFromBorder + canvasD.width : -spaceAwayFromBorder;
+    } else {
+      point.x = Math.random() * canvasD.width | 0;
+      point.y = side === 0 ? -spaceAwayFromBorder : canvasD.height + spaceAwayFromBorder;
+    }
+
+    return point;
+  }
+
+  static getCoordinatesInbound(spaceAwayFromBorder: number = 0): Point {
+    const canvasD = Canvas.getDimensions();
+    const x = (Math.random() * (canvasD.width - 2 * spaceAwayFromBorder)) + spaceAwayFromBorder | 0;
+    const y = (Math.random() * (canvasD.height - 2 * spaceAwayFromBorder)) + spaceAwayFromBorder | 0;
+
+    return { x: x, y: y };
+  }
+}
+
+export const enum Side {
+  "Up" = 0,
+  "Right" = 1,
+  "Down" = 2,
+  "Left" = 3,
 }
