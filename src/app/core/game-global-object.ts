@@ -2,8 +2,9 @@ import { Player } from "../models/player/player.js";
 import { Canvas } from "../ui/canvas.js";
 import { BaseProjectile } from "../models/base/base-projectile.js";
 import { BaseShip } from "../models/base/base-ship.js";
-import { Helper } from "../utils/helper.js";
+import { Helper, Side } from "../utils/helper.js";
 import { BaseEntity } from "../models/base/base-entity.js";
+import { DroneShip } from "../models/enemies/drone-ship.js";
 
 export class GameGlobalObject {
   private static instance: GameGlobalObject;
@@ -28,8 +29,7 @@ export class GameGlobalObject {
   private createPlayer() {
     if (Object.keys(this._core.player).length > 0) throw new Error("Player Already exists");
 
-    const canvasDimensions = Canvas.getDimensions();
-    const player = new Player({ x: canvasDimensions.width / 2, y: canvasDimensions.height / 2 })
+    const player = Player.getInstance();
     this.addEntity('player', player);
   }
 
@@ -85,6 +85,18 @@ export class GameGlobalObject {
     }
 
     return returnArr;
+  }
+
+  spawner() {
+    if (this.size > 2) return;
+
+    this.createRandomBasicEnemy();
+  }
+
+  createRandomBasicEnemy() {
+    const point = Helper.getCoordinatesOutOfBounds(50, Side.Up);
+    const enemy = new DroneShip(point);
+    this.addEntity("enemies", enemy);
   }
 
   get size() {

@@ -18,6 +18,7 @@ class App {
     animate() {
         this.renderBg.drawBackground();
         this.globalObj.updateAndDrawAllEntities();
+        this.globalObj.spawner();
         requestAnimationFrame(this.animate.bind(this));
     }
 }

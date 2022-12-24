@@ -6,6 +6,10 @@ export abstract class BaseEntity {
   protected _delta: Vector = { x: 0, y: 0 };
   protected _radius: number = 0;
   protected _isToBeRemoved: boolean = false;
+  protected abstract ctx: CanvasRenderingContext2D;
+  protected abstract init(): void;
+  abstract draw(): void;
+  abstract update(): void;
 
   get id() {
     if (this._id) {
@@ -22,6 +26,18 @@ export abstract class BaseEntity {
     }
   }
 
+  get position(): Point {
+    return { ...this._position }
+  }
+
+  get delta(): Vector {
+    return { ...this._delta }
+  }
+
+  get radius() {
+    return this._radius;
+  }
+
   get isToBeRemoved() {
     return this._isToBeRemoved;
   }
@@ -29,14 +45,6 @@ export abstract class BaseEntity {
   get originAndRadius(): OriginAndRadius {
     return { id: this.id, x: this.position.x, y: this.position.y, radius: this.radius }
   }
-
-  protected abstract ctx: CanvasRenderingContext2D;
-  abstract get position(): Point;
-  abstract get delta(): Vector;
-  abstract get radius(): number;
-  protected abstract init(): void;
-  abstract draw(): void;
-  abstract update(): void;
 }
 
 export interface Point {

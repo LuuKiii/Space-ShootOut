@@ -19,6 +19,15 @@ export class BaseEntity {
             throw new Error("Cannot overwrite existing id");
         }
     }
+    get position() {
+        return Object.assign({}, this._position);
+    }
+    get delta() {
+        return Object.assign({}, this._delta);
+    }
+    get radius() {
+        return this._radius;
+    }
     get isToBeRemoved() {
         return this._isToBeRemoved;
     }

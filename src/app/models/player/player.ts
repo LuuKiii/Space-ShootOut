@@ -5,13 +5,15 @@ import { Point } from "../base/base-entity.js";
 import { BaseShip } from "../base/base-ship.js";
 
 export class Player extends BaseShip {
+  static instance: Player;
+
   protected ctx: CanvasRenderingContext2D;
   readonly canvasEvents: CanvasEvents;
 
   private readonly image = new Image();
 
 
-  constructor(pos: Point) {
+  private constructor(pos: Point) {
     super();
     this.ctx = Canvas.getContext();
     this.canvasEvents = CanvasEvents.getInstance();
@@ -22,20 +24,20 @@ export class Player extends BaseShip {
 
   protected init(): void {
     this.image.onload = () => {
-      this.resourcesLoaded = true;
+      this._resourcesLoaded = true;
     }
     this.image.src = "/assets/Player.png"
 
-    this.health = 100;
+    this._health = 100;
     this._radius = 30;
-    this.maxSpeed = 3;
-    this.accelerationModifier = 0.05;
+    this._maxSpeed = 3;
+    this._accelerationModifier = 0.05;
   }
 
   draw(): void {
     this.ctx.save();
     this.ctx.translate(this.position.x, this.position.y)
-    this.ctx.rotate(this.angle);
+    this.ctx.rotate(this._rotation);
     this.ctx.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius)
     this.ctx.restore();
   }
@@ -46,22 +48,22 @@ export class Player extends BaseShip {
     this._position.x += this.delta.x;
     this._position.y += this.delta.y;
 
-    this.angle = Helper.calculateRotateAngle(this.position, this.canvasEvents.mouse)
+    this._rotation = Helper.calculateRotationTowardsEntity(this.position, this.canvasEvents.mouse)
     // CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['player'])
   }
 
   calculateMovement() {
     if (this.canvasEvents.keyboard["w"]) {
-      this._delta.y -= this.accelerationModifier;
+      this._delta.y -= this._accelerationModifier;
     }
     if (this.canvasEvents.keyboard["s"]) {
-      this._delta.y += this.accelerationModifier;
+      this._delta.y += this._accelerationModifier;
     }
     if (this.canvasEvents.keyboard["a"]) {
-      this._delta.x -= this.accelerationModifier;
+      this._delta.x -= this._accelerationModifier;
     }
     if (this.canvasEvents.keyboard["d"]) {
-      this._delta.x += this.accelerationModifier;
+      this._delta.x += this._accelerationModifier;
     }
 
     if (!CollisionCalculator.isWholeInbouds(this.originAndRadius)) {
@@ -72,16 +74,16 @@ export class Player extends BaseShip {
     }
   }
 
-  get position(): Point {
-    return { ...this._position }
+  static getInstance() {
+    if (!Player.instance) {
+      let canvasDimensions = Canvas.getDimensions();
+      Player.instance = new Player({ x: canvasDimensions.width / 2, y: canvasDimensions.height / 2 });
+    }
+    return Player.instance;
   }
 
-  get delta(): Point {
-    return { ...this._delta }
-  }
-
-  get radius() {
-    return this._radius;
+  static getPosition() {
+    return Player.getInstance().position;
   }
 }
 
