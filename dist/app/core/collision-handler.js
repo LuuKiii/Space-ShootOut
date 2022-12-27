@@ -4,16 +4,20 @@ export class CollisionHandler {
     static updateCollidedShips(...args) {
         args.forEach(ship => {
             if (ship instanceof Player)
-                CollisionHandler.updatePlayer(ship);
+                CollisionHandler.updateColidedPlayer(ship);
             if (ship instanceof BaseEnemy)
-                CollisionHandler.updateEnemy(ship);
+                CollisionHandler.updateColidedEnemy(ship);
         });
     }
-    static updateEnemy(ship) {
+    static updateColidedEnemy(ship) {
         ship.health -= ship.damageTakenFromCollision;
     }
-    static updatePlayer(player) {
+    static updateColidedPlayer(player) {
         console.log('player');
+    }
+    static updateProjectileHit(projectile, ship) {
+        ship.health -= projectile.damageDealt;
+        projectile.onHitUpdate();
     }
 }
 //# sourceMappingURL=collision-handler.js.map

@@ -1,7 +1,9 @@
+import { CollisionHandler } from "../../core/collision-handler.js";
 import { Canvas } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Point, Vector } from "../base/base-entity.js";
 import { BaseProjectile } from "../base/base-projectile.js";
+import { BaseShip } from "../base/base-ship.js";
 
 export class SingleFire extends BaseProjectile {
   protected ctx: CanvasRenderingContext2D;
@@ -17,6 +19,7 @@ export class SingleFire extends BaseProjectile {
 
   init() {
     this._radius = 10;
+    this._damageDealt = 60;
   }
 
   draw() {
@@ -32,6 +35,13 @@ export class SingleFire extends BaseProjectile {
     if (CollisionCalculator.isWholeOutOfBounds(this.originAndRadius)) {
       this._isToBeRemoved = true;
     }
+
+    const colidesWith = CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['enemies'])
+    colidesWith.forEach(ent => {
+      if (ent instanceof BaseShip) {
+        CollisionHandler.updateProjectileHit(this, ent);
+      }
+    })
   }
 
   get position(): Point {
