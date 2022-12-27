@@ -1,4 +1,5 @@
 import { CollisionHandler } from "../../core/collision-handler.js";
+import { Flags } from "../../core/global-flags.js";
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
@@ -9,6 +10,7 @@ export class Player extends BaseShip {
         this.image = new Image();
         this.ctx = Canvas.getContext();
         this.canvasEvents = CanvasEvents.getInstance();
+        this.flags = Flags.getInstance();
         this._position = Object.assign({}, pos);
         this.init();
     }
@@ -21,6 +23,7 @@ export class Player extends BaseShip {
         this._radius = 30;
         this._maxSpeed = 3;
         this._accelerationModifier = 0.05;
+        this._damageTakenFromCollision = 30;
     }
     draw() {
         this.ctx.save();
@@ -40,6 +43,9 @@ export class Player extends BaseShip {
                 CollisionHandler.updateCollidedShips(this, ent);
             }
         });
+        if (this.health <= 0) {
+            this.flags.playerDead = true;
+        }
     }
     calculateMovement() {
         if (this.canvasEvents.keyboard["w"]) {

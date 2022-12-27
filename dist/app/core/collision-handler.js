@@ -13,7 +13,7 @@ export class CollisionHandler {
         ship.health -= ship.damageTakenFromCollision;
     }
     static updateColidedPlayer(player) {
-        console.log('player');
+        player.health -= player.damageTakenFromCollision;
     }
     static updateProjectileHit(projectile, ship) {
         ship.health -= projectile.damageDealt;

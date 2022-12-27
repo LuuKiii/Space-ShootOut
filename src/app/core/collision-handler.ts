@@ -16,7 +16,7 @@ export class CollisionHandler {
   }
 
   private static updateColidedPlayer(player: Player) {
-    console.log('player')
+    player.health -= player.damageTakenFromCollision;
   }
 
   static updateProjectileHit(projectile: BaseProjectile, ship: BaseShip) {
