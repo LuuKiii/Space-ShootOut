@@ -34,7 +34,7 @@ export class CollisionCalculator {
     }
     static entitiesAreIntersecting(objA, objB) {
         const distanceBetweenOrigins = Math.sqrt(Math.pow(objA.x - objB.x, 2) + Math.pow(objA.y - objB.y, 2));
-        const requiredMinimumDistance = (objA.radius + objB.radius) * 2;
+        const requiredMinimumDistance = (objA.radius + objB.radius);
         if (distanceBetweenOrigins < requiredMinimumDistance) {
             return true;
         }

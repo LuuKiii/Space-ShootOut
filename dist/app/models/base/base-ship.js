@@ -8,7 +8,15 @@ export class BaseShip extends BaseEntity {
         this._rotation = 0;
         this._moveVectorAngle = 0;
         this._health = 0;
+        this._damageTakenFromCollision = 0;
+        this._damageDealtByColliding = 0;
         this._resourcesLoaded = false;
+    }
+    get maxSpeed() {
+        return this._maxSpeed;
+    }
+    set maxSpeed(value) {
+        this._maxSpeed = value;
     }
     get angle() {
         return this._rotation;
@@ -22,14 +30,23 @@ export class BaseShip extends BaseEntity {
     set moveVectorAngle(value) {
         this._moveVectorAngle = value;
     }
-    get maxSpeed() {
-        return this._maxSpeed;
-    }
     get delta() {
         return this._delta;
     }
     set delta(value) {
         this._delta = value;
+    }
+    get health() {
+        return this._health;
+    }
+    set health(value) {
+        this._health = value;
+    }
+    get damageTakenFromCollision() {
+        return this._damageTakenFromCollision;
+    }
+    get damageDealtByColliding() {
+        return this._damageDealtByColliding;
     }
 }
 //# sourceMappingURL=base-ship.js.map

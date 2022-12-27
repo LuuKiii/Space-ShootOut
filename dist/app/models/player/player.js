@@ -1,3 +1,4 @@
+import { CollisionHandler } from "../../core/collision-handler.js";
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
@@ -33,7 +34,12 @@ export class Player extends BaseShip {
         this._position.x += this.delta.x;
         this._position.y += this.delta.y;
         this._rotation = Helper.calculateRotationTowardsEntity(this.position, this.canvasEvents.mouse);
-        // CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['player'])
+        const colidesWith = CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['enemies']);
+        colidesWith.forEach(ent => {
+            if (ent instanceof BaseShip) {
+                CollisionHandler.updateCollidedShips(this, ent);
+            }
+        });
     }
     calculateMovement() {
         if (this.canvasEvents.keyboard["w"]) {

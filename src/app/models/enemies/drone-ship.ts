@@ -1,10 +1,10 @@
 import { Canvas } from "../../ui/canvas.js";
 import { Helper } from "../../utils/helper.js";
+import { BaseEnemy } from "../base/base-enemy.js";
 import { Point } from "../base/base-entity.js";
-import { BaseShip } from "../base/base-ship.js";
-import { shipBehaviours, EnemyBehaviours, FacingBehaviours, MovementBehaviours, FiringBehaviours, MovingAction } from "./enemy-behaviours.js";
+import { shipBehaviours, FacingBehaviours, MovementBehaviours, FiringBehaviours, MovingAction } from "./enemy-behaviours.js";
 
-export class DroneShip extends BaseShip implements EnemyBehaviours {
+export class DroneShip extends BaseEnemy {
   protected ctx: CanvasRenderingContext2D;
   private readonly image = new Image();
 
@@ -26,10 +26,13 @@ export class DroneShip extends BaseShip implements EnemyBehaviours {
     }
     this.image.src = "/assets/SCruiser.png"
 
-    this._health = 100;
     this._radius = 30;
     this._maxSpeed = 1;
     this._accelerationModifier = 0.005;
+
+    this._health = 100;
+    this._damageDealtByColliding = 30;
+    this._damageTakenFromCollision = 1000;
   }
 
   draw(): void {
@@ -40,11 +43,6 @@ export class DroneShip extends BaseShip implements EnemyBehaviours {
     this.ctx.restore();
   }
 
-  updateFromBehaviours(): void {
-    for (const bhv of this.behaviours) {
-      shipBehaviours[bhv](this)
-    }
-  }
 
   update(): void {
     if (this.movingAction !== MovingAction.Stopped) {
@@ -52,6 +50,16 @@ export class DroneShip extends BaseShip implements EnemyBehaviours {
     }
 
     this.updateFromBehaviours()
+
+    if (this._health <= 0) {
+      this._isToBeRemoved = true;
+    }
+  }
+
+  updateFromBehaviours(): void {
+    for (const bhv of this.behaviours) {
+      shipBehaviours[bhv](this)
+    }
   }
 
   calculateMovement() {
