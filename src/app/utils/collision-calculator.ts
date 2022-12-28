@@ -1,4 +1,4 @@
-import { EntitiesCollection, GameGlobalObject } from "../core/game-global-object.js";
+import { EntityTypes, GameGlobalObject } from "../core/game-global-object.js";
 import { BaseEntity } from "../models/base/base-entity.js";
 import { Canvas } from "../ui/canvas.js";
 
@@ -51,7 +51,7 @@ export class CollisionCalculator {
     return false;
   }
 
-  static entitiesObjectIsIntersectingWith<T extends keyof EntitiesCollection>(obj: OriginAndRadius, corePropertiesToInclude?: T[]): BaseEntity[] {
+  static entitiesObjectIsIntersectingWith<T extends EntityTypes>(obj: OriginAndRadius, corePropertiesToInclude?: T[]): BaseEntity[] {
     const entites = GameGlobalObject.getEntitiesByCorePropertyName(corePropertiesToInclude);
     const intersectingEntities: BaseEntity[] = [];
     entites.forEach(ob => {

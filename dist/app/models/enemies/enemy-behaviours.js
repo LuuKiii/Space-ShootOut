@@ -1,5 +1,8 @@
+import { GameGlobalObject } from "../../core/game-global-object.js";
+import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
 import { Player } from "../player/player.js";
+import { SingleFire } from "../weaponry/single-fire.js";
 class BehaviourFunctions {
     static faceTowardsPlayer(instance) {
         instance.angle = Helper.calculateRotationTowardsEntity(instance.position, Player.getPosition());
@@ -18,6 +21,16 @@ class BehaviourFunctions {
         instace.movingAction = 0 /* MovingAction.Accelerating */;
     }
     static fireAtPlayer(instance) {
+        if (CollisionCalculator.isWholeOutOfBounds(instance.originAndRadius))
+            return;
+        const isToFire = instance.chance.toFire > Math.random();
+        if (!isToFire)
+            return;
+        const angle = Helper.calculateAngle(instance.position, Player.getPosition());
+        const { x, y } = Helper.calculateVelocity(angle, 0);
+        const newProjectile = new SingleFire({ x: instance.position.x, y: instance.position.y }, { x: x, y: y }, ["player"]);
+        const core = GameGlobalObject.getInstance();
+        core.addEntity('enemyWeaponry', newProjectile);
     }
     static none(instance) {
     }

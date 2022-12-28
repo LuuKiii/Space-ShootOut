@@ -20,4 +20,6 @@ export abstract class BaseProjectile extends BaseEntity {
   onHitUpdate() {
     this._isToBeRemoved = true;
   }
-} 
+}
+
+export type WeaponryTypes = 'SingleFire' | 'none';

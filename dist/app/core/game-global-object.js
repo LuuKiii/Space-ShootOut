@@ -67,9 +67,9 @@ export class GameGlobalObject {
         return returnArr;
     }
     spawner() {
-        if (this.size > 2)
-            return;
-        this.createRandomBasicEnemy();
+        while (this.size < 5) {
+            this.createRandomBasicEnemy();
+        }
     }
     createRandomBasicEnemy() {
         const point = Helper.getCoordinatesOutOfBounds(50, 0 /* Side.Up */);

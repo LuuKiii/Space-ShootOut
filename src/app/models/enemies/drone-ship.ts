@@ -2,6 +2,7 @@ import { Canvas } from "../../ui/canvas.js";
 import { Helper } from "../../utils/helper.js";
 import { BaseEnemy } from "../base/base-enemy.js";
 import { Point } from "../base/base-entity.js";
+import { WeaponryTypes } from "../base/base-projectile.js";
 import { shipBehaviours, FacingBehaviours, MovementBehaviours, FiringBehaviours, MovingAction } from "./enemy-behaviours.js";
 
 export class DroneShip extends BaseEnemy {
@@ -10,7 +11,8 @@ export class DroneShip extends BaseEnemy {
 
   public movingAction: MovingAction = MovingAction.Stopped;
   public destinationPoint: Point | null = null;
-  public behaviours: [FacingBehaviours, MovementBehaviours, FiringBehaviours] = ['faceTowardsPlayer', 'moveToRandomWaypointAndStop', "none"];
+  public behaviours: [FacingBehaviours, MovementBehaviours, FiringBehaviours] = ['faceTowardsPlayer', 'moveToRandomWaypointAndStop', "fireAtPlayer"];
+  public weaponry: WeaponryTypes | null = 'SingleFire';
 
   constructor(pos: Point) {
     super();
@@ -33,6 +35,12 @@ export class DroneShip extends BaseEnemy {
     this._health = 100;
     this._damageDealtByColliding = 30;
     this._damageTakenFromCollision = 1000;
+
+    this.setChances()
+  }
+
+  setChances(): void {
+    this.chance.toFire = 0.005;
   }
 
   draw(): void {

@@ -1,19 +1,20 @@
+import { GameGlobalObject } from "../../core/game-global-object.js";
+import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
 import { BaseEnemy } from "../base/base-enemy.js";
-import { Point } from "../base/base-entity.js";
-import { BaseShip } from "../base/base-ship.js";
 import { Player } from "../player/player.js";
+import { SingleFire } from "../weaponry/single-fire.js";
 
 class BehaviourFunctions {
-  static faceTowardsPlayer(instance: BaseShip) {
+  static faceTowardsPlayer(instance: BaseEnemy) {
     instance.angle = Helper.calculateRotationTowardsEntity(instance.position, Player.getPosition())
   }
 
-  static faceAwayFromPlayer(instance: BaseShip) {
+  static faceAwayFromPlayer(instance: BaseEnemy) {
     instance.angle = Helper.calculateRotationToFaceAwayEntity(instance.position, Player.getPosition())
   }
 
-  static moveToRandomWaypoint(instance: BaseShip) {
+  static moveToRandomWaypoint(instance: BaseEnemy) {
 
   }
 
@@ -26,22 +27,24 @@ class BehaviourFunctions {
     instace.movingAction = MovingAction.Accelerating;
   }
 
-  static fireAtPlayer(instance: BaseShip) {
+  static fireAtPlayer(instance: BaseEnemy) {
+    if (CollisionCalculator.isWholeOutOfBounds(instance.originAndRadius)) return;
+    const isToFire = instance.chance.toFire > Math.random();
+    if (!isToFire) return;
 
+    const angle = Helper.calculateAngle(instance.position, Player.getPosition())
+    const { x, y } = Helper.calculateVelocity(angle, 0);
+    const newProjectile = new SingleFire({ x: instance.position.x, y: instance.position.y }, { x: x, y: y }, ["player"])
+    const core = GameGlobalObject.getInstance();
+    core.addEntity('enemyWeaponry', newProjectile)
   }
 
-  static none(instance: BaseShip) {
+  static none(instance: BaseEnemy) {
 
   }
 }
 
 //TODO this api should be changed
-// export interface EnemyBehaviours {
-//   movingAction: MovingAction;
-//   destinationPoint: Point | null;
-//   behaviours: [FacingBehaviours, MovementBehaviours, FiringBehaviours];
-//   updateFromBehaviours(): void;
-// }
 
 export const enum MovingAction {
   'Accelerating' = 0,

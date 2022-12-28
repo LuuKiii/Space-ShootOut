@@ -88,9 +88,9 @@ export class GameGlobalObject {
   }
 
   spawner() {
-    if (this.size > 2) return;
-
-    this.createRandomBasicEnemy();
+    while (this.size < 5) {
+      this.createRandomBasicEnemy();
+    }
   }
 
   createRandomBasicEnemy() {

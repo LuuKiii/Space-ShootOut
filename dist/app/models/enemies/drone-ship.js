@@ -8,7 +8,8 @@ export class DroneShip extends BaseEnemy {
         this.image = new Image();
         this.movingAction = 2 /* MovingAction.Stopped */;
         this.destinationPoint = null;
-        this.behaviours = ['faceTowardsPlayer', 'moveToRandomWaypointAndStop', "none"];
+        this.behaviours = ['faceTowardsPlayer', 'moveToRandomWaypointAndStop', "fireAtPlayer"];
+        this.weaponry = 'SingleFire';
         this.ctx = Canvas.getContext();
         this._position = Object.assign({}, pos);
         this.init();
@@ -24,6 +25,10 @@ export class DroneShip extends BaseEnemy {
         this._health = 100;
         this._damageDealtByColliding = 30;
         this._damageTakenFromCollision = 1000;
+        this.setChances();
+    }
+    setChances() {
+        this.chance.toFire = 0.005;
     }
     draw() {
         this.ctx.save();
