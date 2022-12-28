@@ -45,7 +45,7 @@ class App implements Observer {
   }
 
   updateFromSubject(): void {
-    this.shouldAnimate = false;
+    // this.shouldAnimate = false;
   }
 
 }

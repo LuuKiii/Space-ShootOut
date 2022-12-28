@@ -57,13 +57,13 @@ export class GameGlobalObject {
         entity.update();
         entity.draw();
         if (entity.isToBeRemoved) {
-          this.removeEntityFrom(coreProp as keyof EntitiesCollection, entity.id);
+          this.removeEntityFrom(coreProp as EntityTypes, entity.id);
         }
       }
     }
   }
 
-  static getEntitiesByCorePropertyName<T extends keyof EntitiesCollection>(corePropName?: T[]): BaseEntity[] {
+  static getEntitiesByCorePropertyName<T extends EntityTypes>(corePropName?: T[]): BaseEntity[] {
     if (!GameGlobalObject.instance) return [];
 
     const corePropertiesToGet = [];
@@ -77,7 +77,7 @@ export class GameGlobalObject {
     }
 
     for (const coreProp of corePropertiesToGet) {
-      const coreObj = GameGlobalObject.instance._core[coreProp as keyof typeof GameGlobalObject.instance._core]
+      const coreObj = GameGlobalObject.instance._core[coreProp as EntityTypes]
       for (const entityId in coreObj) {
         const entity = coreObj[entityId as keyof typeof coreObj]
         returnArr.push(entity)
@@ -111,7 +111,9 @@ export class GameGlobalObject {
   }
 }
 
-export interface EntitiesCollection {
+export type EntityTypes = keyof EntitiesCollection;
+
+interface EntitiesCollection {
   player: {
     [key: string]: Player
   };

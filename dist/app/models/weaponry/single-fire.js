@@ -4,11 +4,12 @@ import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { BaseProjectile } from "../base/base-projectile.js";
 import { BaseShip } from "../base/base-ship.js";
 export class SingleFire extends BaseProjectile {
-    constructor(pos, velocity) {
+    constructor(pos, velocity, damages) {
         super();
         this.ctx = Canvas.getContext();
         this._position = Object.assign({}, pos);
         this._delta = Object.assign({}, velocity);
+        this.damages = damages;
         this.init();
     }
     init() {
@@ -26,7 +27,7 @@ export class SingleFire extends BaseProjectile {
         if (CollisionCalculator.isWholeOutOfBounds(this.originAndRadius)) {
             this._isToBeRemoved = true;
         }
-        const colidesWith = CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['enemies']);
+        const colidesWith = CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, this.damages);
         colidesWith.forEach(ent => {
             if (ent instanceof BaseShip) {
                 CollisionHandler.updateProjectileHit(this, ent);

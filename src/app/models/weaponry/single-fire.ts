@@ -1,4 +1,5 @@
 import { CollisionHandler } from "../../core/collision-handler.js";
+import { EntityTypes } from "../../core/game-global-object.js";
 import { Canvas } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Point, Vector } from "../base/base-entity.js";
@@ -8,12 +9,13 @@ import { BaseShip } from "../base/base-ship.js";
 export class SingleFire extends BaseProjectile {
   protected ctx: CanvasRenderingContext2D;
 
-  constructor(pos: Point, velocity: Vector) {
+  constructor(pos: Point, velocity: Vector, damages: EntityTypes[]) {
     super();
     this.ctx = Canvas.getContext();
 
     this._position = { ...pos };
     this._delta = { ...velocity };
+    this.damages = damages;
     this.init();
   }
 
@@ -36,7 +38,7 @@ export class SingleFire extends BaseProjectile {
       this._isToBeRemoved = true;
     }
 
-    const colidesWith = CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['enemies'])
+    const colidesWith = CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, this.damages)
     colidesWith.forEach(ent => {
       if (ent instanceof BaseShip) {
         CollisionHandler.updateProjectileHit(this, ent);

@@ -28,7 +28,7 @@ class App {
         }
     }
     updateFromSubject() {
-        this.shouldAnimate = false;
+        // this.shouldAnimate = false;
     }
 }
 const app = new App();
