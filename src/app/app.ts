@@ -38,6 +38,7 @@ class App implements Observer {
     this.renderBg.drawBackground();
     this.globalObj.updateAndDrawAllEntities();
     this.globalObj.spawner();
+    this.playerWeaponHanlder.playerFiring();
 
     if (this.shouldAnimate) {
       requestAnimationFrame(this.animate.bind(this))

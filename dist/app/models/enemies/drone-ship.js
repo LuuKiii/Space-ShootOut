@@ -12,6 +12,8 @@ export class DroneShip extends BaseEnemy {
         this.weaponry = 'SingleFire';
         this.ctx = Canvas.getContext();
         this._position = Object.assign({}, pos);
+        this._movement = this.createMovementObject();
+        this._angle = this.createAngleObject();
         this.init();
     }
     init() {
@@ -20,8 +22,8 @@ export class DroneShip extends BaseEnemy {
         };
         this.image.src = "/assets/SCruiser.png";
         this._radius = 30;
-        this._maxSpeed = 1;
-        this._accelerationModifier = 0.005;
+        // this._maxSpeed = 1;
+        // this._accelerationModifier = 0.005;
         this._health = 100;
         this._damageDealtByColliding = 30;
         this._damageTakenFromCollision = 1000;
@@ -33,7 +35,7 @@ export class DroneShip extends BaseEnemy {
     draw() {
         this.ctx.save();
         this.ctx.translate(this.position.x, this.position.y);
-        this.ctx.rotate(this._rotation);
+        this.ctx.rotate(this._angle.rotation);
         this.ctx.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius);
         this.ctx.restore();
     }
@@ -51,17 +53,23 @@ export class DroneShip extends BaseEnemy {
             shipBehaviours[bhv](this);
         }
     }
+    //TODO This requires work. like - a lot.
     calculateMovement() {
+        // naive aproach - forward movement is applied to movement in any direction
         if (this.movingAction === 0 /* MovingAction.Accelerating */) {
-            this._acceleration = this._acceleration + this._accelerationModifier > this.maxSpeed ? this.maxSpeed : this._acceleration + this._accelerationModifier;
+            this._movement.acceleration.forward = this._movement.acceleration.forward + this._movement.accelerationModifier.forward > this._movement.maxSpeed.forward
+                ? this._movement.maxSpeed.forward
+                : this._movement.acceleration.forward + this._movement.accelerationModifier.forward;
         }
         if (this.movingAction === 1 /* MovingAction.Decelerating */) {
-            this._acceleration = this._acceleration - this._accelerationModifier > 0 ? this._acceleration - this._accelerationModifier : 0;
+            this._movement.acceleration.forward = this._movement.acceleration.forward - this._movement.accelerationModifier.forward > 0
+                ? this._movement.acceleration.forward - this._movement.accelerationModifier.forward
+                : 0;
         }
         // if (this.movingAction === MovingAction.Moving) {
         // }
-        this._position.x += this.delta.x * this._acceleration;
-        this._position.y += this.delta.y * this._acceleration;
+        this._position.x += this.delta.x * this._movement.acceleration.forward;
+        this._position.y += this.delta.y * this._movement.acceleration.forward;
         this.updateMovingAction();
     }
     updateMovingAction() {

@@ -25,6 +25,9 @@ export class BaseEntity {
     get delta() {
         return Object.assign({}, this._delta);
     }
+    set delta(value) {
+        this._delta = value;
+    }
     get radius() {
         return this._radius;
     }

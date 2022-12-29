@@ -34,6 +34,10 @@ export abstract class BaseEntity {
     return { ...this._delta }
   }
 
+  set delta(value) {
+    this._delta = value;
+  }
+
   get radius() {
     return this._radius;
   }

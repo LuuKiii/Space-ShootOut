@@ -1,40 +1,81 @@
 import { BaseEntity } from "./base-entity.js";
 export class BaseShip extends BaseEntity {
     constructor() {
+        // protected _maxSpeed: number = 0;
+        // protected _acceleration: number = 0;
+        // protected _accelerationModifier: number = 0;
+        // protected _sideWayAcceleration: number = 0;
+        // protected _sideWayAccelerationModifier: number = 0;
         super(...arguments);
-        this._maxSpeed = 0;
-        this._accelerationModifier = 0;
-        this._acceleration = 0;
-        this._rotation = 0;
-        this._moveVectorAngle = 0;
         this._health = 0;
         this._damageTakenFromCollision = 0;
         this._damageDealtByColliding = 0;
         this._resourcesLoaded = false;
+        // get maxSpeed() {
+        //   return this._maxSpeed;
+        // }
+        // set maxSpeed(value) {
+        //   this._maxSpeed = value;
+        // }
+        // get rotation() {
+        //   return this._rotation;
+        // }
+        // set rotation(value: number) {
+        //   this._rotation = value;
+        // }
+        // get facingAngle() {
+        //   return this.rotation - 0.5 * Math.PI;
+        // }
+        // get moveVectorAngle() {
+        //   return this._moveVectorAngle;
+        // }
+        // set moveVectorAngle(value) {
+        //   this._moveVectorAngle = value;
+        // }
     }
-    get maxSpeed() {
-        return this._maxSpeed;
+    createMovementObject() {
+        const equalMaxSpeeds = 1;
+        const equalAccelerationModifier = 0.05;
+        return {
+            maxSpeed: {
+                forward: equalMaxSpeeds,
+                left: equalMaxSpeeds,
+                right: equalMaxSpeeds,
+                backwards: equalMaxSpeeds,
+            },
+            acceleration: {
+                forward: 0,
+                left: 0,
+                right: 0,
+                backwards: 0,
+            },
+            accelerationModifier: {
+                forward: equalAccelerationModifier,
+                left: equalAccelerationModifier,
+                right: equalAccelerationModifier,
+                backwards: equalAccelerationModifier
+            }
+        };
     }
-    set maxSpeed(value) {
-        this._maxSpeed = value;
+    ;
+    createAngleObject() {
+        return {
+            rotation: 0,
+            rotationSpeed: 0,
+            rotationMaxSpeed: 0.025,
+            rotationModifier: 0.001,
+            get facing() {
+                return this.rotation - 0.5 * Math.PI;
+            },
+            moveAngle: 0
+        };
     }
+    ;
     get angle() {
-        return this._rotation;
+        return this._angle;
     }
-    set angle(value) {
-        this._rotation = value;
-    }
-    get moveVectorAngle() {
-        return this._moveVectorAngle;
-    }
-    set moveVectorAngle(value) {
-        this._moveVectorAngle = value;
-    }
-    get delta() {
-        return this._delta;
-    }
-    set delta(value) {
-        this._delta = value;
+    get movement() {
+        return this._movement;
     }
     get health() {
         return this._health;

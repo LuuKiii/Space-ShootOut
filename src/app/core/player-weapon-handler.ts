@@ -1,36 +1,45 @@
 import { SingleFire } from "../models/weaponry/single-fire.js";
 import { CanvasEvents } from "../ui/canvas.js";
 import { Helper } from "../utils/helper.js";
-import { Observer } from "../utils/observer.js";
+import { Observer, ObserverCanvas } from "../utils/observer.js";
 import { GameGlobalObject } from "./game-global-object.js";
 
-export class PlayerWeaponHandler implements Observer {
+export class PlayerWeaponHandler implements ObserverCanvas {
   static instance: PlayerWeaponHandler;
 
   private canvasEvents = CanvasEvents.getInstance();
   private globalObj = GameGlobalObject.getInstance();
   private player = this.globalObj.getPlayer();
+  private isFiring: boolean = false;
   private onCooldown: boolean = false;
 
   private constructor() {
-    this.canvasEvents.register(this)
+    this.canvasEvents.registerKeyboard(this)
+  }
+
+  playerFiring() {
+    if (!this.isFiring) return;
+    if (this.onCooldown) return;
+
+    this.fire()
+    this.setCooldown(0.5)
   }
 
   fire() {
-    const angle = Helper.calculateAngle(this.player.position, this.canvasEvents.mouse)
-    const { x, y } = Helper.calculateVelocity(angle, 0);
+    const { x, y } = Helper.calculateVelocity(this.player.angle.facing, 0);
     const newProjectile = new SingleFire({ x: this.player.position.x, y: this.player.position.y }, { x: x, y: y }, ["enemies"])
     this.globalObj.addEntity('playerWeaponry', newProjectile);
   }
 
-  //TODO Add button heldown 
-  updateFromSubject(): void {
-    if (this.onCooldown) return;
-    const mouse = this.canvasEvents.mouse.button;
+  updateFromKeyDown(keyPressed: string): void {
+    if (keyPressed === " ") {
+      this.isFiring = true;
+    }
+  }
 
-    if (mouse.LPM) {
-      this.fire()
-      this.setCooldown(0.5)
+  updateFromKeyUp(keyReleased: string): void {
+    if (keyReleased === " ") {
+      this.isFiring = false;
     }
   }
 

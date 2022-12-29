@@ -7,23 +7,31 @@ export class PlayerWeaponHandler {
         this.canvasEvents = CanvasEvents.getInstance();
         this.globalObj = GameGlobalObject.getInstance();
         this.player = this.globalObj.getPlayer();
+        this.isFiring = false;
         this.onCooldown = false;
-        this.canvasEvents.register(this);
+        this.canvasEvents.registerKeyboard(this);
+    }
+    playerFiring() {
+        if (!this.isFiring)
+            return;
+        if (this.onCooldown)
+            return;
+        this.fire();
+        this.setCooldown(0.5);
     }
     fire() {
-        const angle = Helper.calculateAngle(this.player.position, this.canvasEvents.mouse);
-        const { x, y } = Helper.calculateVelocity(angle, 0);
+        const { x, y } = Helper.calculateVelocity(this.player.angle.facing, 0);
         const newProjectile = new SingleFire({ x: this.player.position.x, y: this.player.position.y }, { x: x, y: y }, ["enemies"]);
         this.globalObj.addEntity('playerWeaponry', newProjectile);
     }
-    //TODO Add button heldown 
-    updateFromSubject() {
-        if (this.onCooldown)
-            return;
-        const mouse = this.canvasEvents.mouse.button;
-        if (mouse.LPM) {
-            this.fire();
-            this.setCooldown(0.5);
+    updateFromKeyDown(keyPressed) {
+        if (keyPressed === " ") {
+            this.isFiring = true;
+        }
+    }
+    updateFromKeyUp(keyReleased) {
+        if (keyReleased === " ") {
+            this.isFiring = false;
         }
     }
     setCooldown(timeInSec) {

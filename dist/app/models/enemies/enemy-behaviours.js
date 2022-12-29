@@ -5,10 +5,10 @@ import { Player } from "../player/player.js";
 import { SingleFire } from "../weaponry/single-fire.js";
 class BehaviourFunctions {
     static faceTowardsPlayer(instance) {
-        instance.angle = Helper.calculateRotationTowardsEntity(instance.position, Player.getPosition());
+        instance.angle.rotation = Helper.calculateRotationTowardsEntity(instance.position, Player.getPosition());
     }
     static faceAwayFromPlayer(instance) {
-        instance.angle = Helper.calculateRotationToFaceAwayEntity(instance.position, Player.getPosition());
+        instance.angle.rotation = Helper.calculateRotationToFaceAwayEntity(instance.position, Player.getPosition());
     }
     static moveToRandomWaypoint(instance) {
     }
@@ -16,8 +16,8 @@ class BehaviourFunctions {
         if (instace.movingAction !== 2 /* MovingAction.Stopped */)
             return;
         instace.destinationPoint = Helper.getCoordinatesInbound(50);
-        instace.moveVectorAngle = Helper.calculateAngle(instace.position, instace.destinationPoint);
-        instace.delta = Helper.calculateVelocity(instace.moveVectorAngle, instace.maxSpeed);
+        instace.angle.moveAngle = Helper.calculateAngle(instace.position, instace.destinationPoint);
+        instace.delta = Helper.calculateVelocity(instace.angle.moveAngle, instace.movement.maxSpeed.forward);
         instace.movingAction = 0 /* MovingAction.Accelerating */;
     }
     static fireAtPlayer(instance) {

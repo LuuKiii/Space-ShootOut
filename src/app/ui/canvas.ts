@@ -1,4 +1,4 @@
-import { Observer, Subject } from "../utils/observer";
+import { Observer, ObserverCanvas, Subject, SubjectCanvas } from "../utils/observer";
 
 export class Canvas {
   private static instance: Canvas;
@@ -39,12 +39,14 @@ export class Canvas {
 }
 
 
-export class CanvasEvents implements Subject {
+export class CanvasEvents implements SubjectCanvas {
   static instace: CanvasEvents;
 
   private readonly container: HTMLDivElement;
   private readonly canvas: Canvas;
-  private observers: Observer[] = [];
+
+  observersMouse: ObserverCanvas[] = [];
+  observersKeyboard: ObserverCanvas[] = [];
 
   private _mouse: MouseEventData = { x: 0, y: 0, button: {} };
   private _keyboard: KeyboardEventData = {};
@@ -65,17 +67,17 @@ export class CanvasEvents implements Subject {
 
     this.canvas.element.addEventListener('mousedown', event => {
       this._mouse.button[MouseButtons[event.button]] = true;
-      this.notify();
+      this.notifyFromMouse();
     })
 
     this.canvas.element.addEventListener('mouseup', event => {
       delete this._mouse.button[MouseButtons[event.button]]
-      this.notify();
+      this.notifyFromMouse();
     })
 
     this.canvas.element.addEventListener('contextmenu', event => {
       event.preventDefault();
-      this.notify();
+      this.notifyFromMouse();
     })
 
     this.canvas.element.addEventListener('wheel', event => {
@@ -87,7 +89,7 @@ export class CanvasEvents implements Subject {
         this._mouse.button[MouseButtons[MouseButtons.ScrollUp]] = true;
       }
 
-      this.notify();
+      this.notifyFromMouse();
 
       delete this._mouse.button[MouseButtons[MouseButtons.ScrollDown]];
       delete this._mouse.button[MouseButtons[MouseButtons.ScrollUp]];
@@ -97,33 +99,79 @@ export class CanvasEvents implements Subject {
       for (const btn in this.mouse.button) {
         delete this.mouse.button[btn];
       }
-      this.notify();
+      this.notifyFromMouse();
     })
   }
 
   private initKeyboardEvents() {
     this.container.addEventListener('keydown', event => {
       this._keyboard[event.key] = true;
+      this.notifyFromKeyDown(event.key)
     })
     this.container.addEventListener('keyup', event => {
       delete this._keyboard[event.key];
+      this.notifyFromKeyUp(event.key)
     })
   }
 
-  register(observer: Observer): void {
-    this.observers.push(observer)
+  registerMouse(observer: ObserverCanvas): void {
+    if (observer.updateFromMouse == undefined) throw new Error('updateFromMouse Method is not implemented');
+    this.observersMouse.push(observer)
   }
 
-  unregister(observer: Observer): void {
-    const index = this.observers.indexOf(observer)
+  unregisterMouse(observer: ObserverCanvas): void {
+    const index = this.observersMouse.indexOf(observer)
     if (index > -1) {
-      this.observers.splice(index, 1);
+      this.observersMouse.splice(index, 1)
     }
   }
 
-  notify(): void {
-    this.observers.forEach(observer => observer.updateFromSubject())
+  notifyFromMouse(): void {
+    this.observersMouse.forEach(ob => ob.updateFromMouse!())
   }
+
+  registerKeyboard(observer: ObserverCanvas): void {
+    if (observer.updateFromKeyUp == undefined || observer.updateFromKeyDown == undefined) throw new Error('updateFromKeyboard Methods are not implemented');
+    this.observersKeyboard.push(observer)
+  }
+
+  unregisterKeyboard(observer: ObserverCanvas): void {
+    const index = this.observersKeyboard.indexOf(observer)
+    if (index > -1) {
+      this.observersKeyboard.splice(index, 1)
+    }
+  }
+
+  notifyFromKeyUp(keyReleased: string): void {
+    this.observersKeyboard.forEach(ob => ob.updateFromKeyUp!(keyReleased))
+  }
+
+  notifyFromKeyDown(keyPressed: string): void {
+    this.observersKeyboard.forEach(ob => ob.updateFromKeyDown!(keyPressed))
+  }
+
+  // registerImportantKeyboardObservers(observer: Observer) {
+
+  // }
+
+  // unregisterImportantKeyboardObservers(observer: Observer) {
+
+  // }
+
+  // register(observer: Observer): void {
+  //   this.observers.push(observer)
+  // }
+
+  // unregister(observer: Observer): void {
+  //   const index = this.observers.indexOf(observer)
+  //   if (index > -1) {
+  //     this.observers.splice(index, 1);
+  //   }
+  // }
+
+  // notify(): void {
+  //   this.observers.forEach(observer => observer.updateFromSubject())
+  // }
 
   get mouse() {
     return this._mouse;

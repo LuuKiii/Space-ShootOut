@@ -4,10 +4,13 @@ import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator, OriginAndRadius } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
 import { Point } from "../base/base-entity.js";
-import { BaseShip } from "../base/base-ship.js";
+import { Angle, BaseShip, Movement } from "../base/base-ship.js";
 
 export class Player extends BaseShip {
   static instance: Player;
+
+  protected _movement: Movement;
+  protected _angle: Angle;
 
   protected ctx: CanvasRenderingContext2D;
   readonly canvasEvents: CanvasEvents;
@@ -22,6 +25,8 @@ export class Player extends BaseShip {
     this.flags = Flags.getInstance();
 
     this._position = { ...pos }
+    this._movement = this.createMovementObject();
+    this._angle = this.createAngleObject();
     this.init();
   }
 
@@ -33,15 +38,18 @@ export class Player extends BaseShip {
 
     this._health = 100;
     this._radius = 30;
-    this._maxSpeed = 3;
-    this._accelerationModifier = 0.05;
+    // this._maxSpeed = 3;
+    // this._accelerationModifier = 0.05;
+    // this._rotationModifier = 0.0001;
+    // this._rotationMaxSpeed = 0.01;
     this._damageTakenFromCollision = 30;
   }
+
 
   draw(): void {
     this.ctx.save();
     this.ctx.translate(this.position.x, this.position.y)
-    this.ctx.rotate(this._rotation);
+    this.ctx.rotate(this._angle.rotation);
     this.ctx.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius)
     this.ctx.restore();
   }
@@ -51,8 +59,6 @@ export class Player extends BaseShip {
 
     this._position.x += this.delta.x;
     this._position.y += this.delta.y;
-
-    this._rotation = Helper.calculateRotationTowardsEntity(this.position, this.canvasEvents.mouse)
 
     const colidesWith = CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['enemies'])
     colidesWith.forEach(ent => {
@@ -67,18 +73,31 @@ export class Player extends BaseShip {
   }
 
   calculateMovement() {
+    if (this._angle.rotationSpeed > -this._angle.rotationMaxSpeed && this.canvasEvents.keyboard["q"]) {
+      this._angle.rotationSpeed -= this._angle.rotationModifier
+    } else if (this._angle.rotationSpeed < this._angle.rotationMaxSpeed && this.canvasEvents.keyboard["e"]) {
+      this._angle.rotationSpeed += this._angle.rotationModifier
+    } else {
+      const slowdown = 0.3 * this._angle.rotationModifier;
+      this._angle.rotationSpeed = Math.abs(this._angle.rotationSpeed) - this._angle.rotationModifier > 0
+        ? this._angle.rotationSpeed + (-Math.sign(this._angle.rotationSpeed) * slowdown)
+        : 0;
+    }
+
     if (this.canvasEvents.keyboard["w"]) {
-      this._delta.y -= this._accelerationModifier;
+      this._delta.y -= this._movement.accelerationModifier.forward;
     }
     if (this.canvasEvents.keyboard["s"]) {
-      this._delta.y += this._accelerationModifier;
+      this._delta.y += this._movement.accelerationModifier.backwards;
     }
     if (this.canvasEvents.keyboard["a"]) {
-      this._delta.x -= this._accelerationModifier;
+      this._delta.x -= this._movement.accelerationModifier.left;
     }
     if (this.canvasEvents.keyboard["d"]) {
-      this._delta.x += this._accelerationModifier;
+      this._delta.x += this._movement.accelerationModifier.right;
     }
+
+    this._angle.rotation += this._angle.rotationSpeed;
 
     if (!CollisionCalculator.isWholeInbouds(this.originAndRadius)) {
       this._position.x -= this.delta.x;
