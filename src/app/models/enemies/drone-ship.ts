@@ -4,13 +4,13 @@ import { BaseEnemy } from "../base/base-enemy.js";
 import { Point } from "../base/base-entity.js";
 import { WeaponryTypes } from "../base/base-projectile.js";
 import { Movement, Angle } from "../base/base-ship.js";
-import { shipBehaviours, FacingBehaviours, MovementBehaviours, FiringBehaviours, MovingAction } from "./enemy-behaviours.js";
+import { MovingAction, FacingBehaviours, MovementBehaviours, FiringBehaviours, shipBehaviours } from "./enemy-behaviours.js";
 
 export class DroneShip extends BaseEnemy {
   protected ctx: CanvasRenderingContext2D;
   private readonly image = new Image();
 
-  public movingAction: MovingAction = MovingAction.Stopped;
+  public movingAction = MovingAction.Stopped;
   public destinationPoint: Point | null = null;
   public behaviours: [FacingBehaviours, MovementBehaviours, FiringBehaviours] = ['faceTowardsPlayer', 'moveToRandomWaypointAndStop', "fireAtPlayer"];
   public weaponry: WeaponryTypes | null = 'SingleFire';
@@ -21,7 +21,7 @@ export class DroneShip extends BaseEnemy {
     super();
     this.ctx = Canvas.getContext();
 
-    this._position = { ...pos }
+    this._position = pos;
     this._movement = this.createMovementObject();
     this._angle = this.createAngleObject();
     this.init()

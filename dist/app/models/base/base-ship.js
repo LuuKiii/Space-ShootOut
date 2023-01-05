@@ -11,37 +11,16 @@ export class BaseShip extends BaseEntity {
         this._damageTakenFromCollision = 0;
         this._damageDealtByColliding = 0;
         this._resourcesLoaded = false;
-        // get maxSpeed() {
-        //   return this._maxSpeed;
-        // }
-        // set maxSpeed(value) {
-        //   this._maxSpeed = value;
-        // }
-        // get rotation() {
-        //   return this._rotation;
-        // }
-        // set rotation(value: number) {
-        //   this._rotation = value;
-        // }
-        // get facingAngle() {
-        //   return this.rotation - 0.5 * Math.PI;
-        // }
-        // get moveVectorAngle() {
-        //   return this._moveVectorAngle;
-        // }
-        // set moveVectorAngle(value) {
-        //   this._moveVectorAngle = value;
-        // }
     }
     createMovementObject() {
-        const equalMaxSpeeds = 1;
-        const equalAccelerationModifier = 0.05;
+        const defaultMaxSpeed = 1;
+        const defaultAccelerationModifier = 0.05;
         return {
             maxSpeed: {
-                forward: equalMaxSpeeds,
-                left: equalMaxSpeeds,
-                right: equalMaxSpeeds,
-                backwards: equalMaxSpeeds,
+                forward: defaultMaxSpeed,
+                left: defaultMaxSpeed,
+                right: defaultMaxSpeed,
+                backwards: defaultMaxSpeed,
             },
             acceleration: {
                 forward: 0,
@@ -50,10 +29,10 @@ export class BaseShip extends BaseEntity {
                 backwards: 0,
             },
             accelerationModifier: {
-                forward: equalAccelerationModifier,
-                left: equalAccelerationModifier,
-                right: equalAccelerationModifier,
-                backwards: equalAccelerationModifier
+                forward: defaultAccelerationModifier,
+                left: defaultAccelerationModifier,
+                right: defaultAccelerationModifier,
+                backwards: defaultAccelerationModifier
             }
         };
     }

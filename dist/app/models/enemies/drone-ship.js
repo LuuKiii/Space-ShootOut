@@ -1,17 +1,17 @@
 import { Canvas } from "../../ui/canvas.js";
 import { Helper } from "../../utils/helper.js";
 import { BaseEnemy } from "../base/base-enemy.js";
-import { shipBehaviours } from "./enemy-behaviours.js";
+import { MovingAction, shipBehaviours } from "./enemy-behaviours.js";
 export class DroneShip extends BaseEnemy {
     constructor(pos) {
         super();
         this.image = new Image();
-        this.movingAction = 2 /* MovingAction.Stopped */;
+        this.movingAction = MovingAction.Stopped;
         this.destinationPoint = null;
         this.behaviours = ['faceTowardsPlayer', 'moveToRandomWaypointAndStop', "fireAtPlayer"];
         this.weaponry = 'SingleFire';
         this.ctx = Canvas.getContext();
-        this._position = Object.assign({}, pos);
+        this._position = pos;
         this._movement = this.createMovementObject();
         this._angle = this.createAngleObject();
         this.init();
@@ -40,7 +40,7 @@ export class DroneShip extends BaseEnemy {
         this.ctx.restore();
     }
     update() {
-        if (this.movingAction !== 2 /* MovingAction.Stopped */) {
+        if (this.movingAction !== MovingAction.Stopped) {
             this.calculateMovement();
         }
         this.updateFromBehaviours();
@@ -56,12 +56,12 @@ export class DroneShip extends BaseEnemy {
     //TODO This requires work. like - a lot.
     calculateMovement() {
         // naive aproach - forward movement is applied to movement in any direction
-        if (this.movingAction === 0 /* MovingAction.Accelerating */) {
+        if (this.movingAction === MovingAction.Accelerating) {
             this._movement.acceleration.forward = this._movement.acceleration.forward + this._movement.accelerationModifier.forward > this._movement.maxSpeed.forward
                 ? this._movement.maxSpeed.forward
                 : this._movement.acceleration.forward + this._movement.accelerationModifier.forward;
         }
-        if (this.movingAction === 1 /* MovingAction.Decelerating */) {
+        if (this.movingAction === MovingAction.Decelerating) {
             this._movement.acceleration.forward = this._movement.acceleration.forward - this._movement.accelerationModifier.forward > 0
                 ? this._movement.acceleration.forward - this._movement.accelerationModifier.forward
                 : 0;
@@ -75,7 +75,7 @@ export class DroneShip extends BaseEnemy {
     updateMovingAction() {
         const breakingpoint = 10;
         if (Helper.calculateDistanceBetweenPoints(this.position, this.destinationPoint) < breakingpoint) {
-            this.movingAction = 1 /* MovingAction.Decelerating */;
+            this.movingAction = MovingAction.Decelerating;
         }
     }
 }

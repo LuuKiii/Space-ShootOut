@@ -1,10 +1,4 @@
-import { BehaviourFunctions } from "./enemy-behaviours-functions.js";
-export const MovingAction = {
-    Accelerating: 0,
-    Decelerating: 1,
-    Stopped: 2,
-    Moving: 3,
-};
+//TODO this api should be changed
 export const shipBehaviours = {
     faceTowardsPlayer: BehaviourFunctions.faceTowardsPlayer,
     faceAwayFromPlayer: BehaviourFunctions.faceAwayFromPlayer,
@@ -13,4 +7,4 @@ export const shipBehaviours = {
     fireAtPlayer: BehaviourFunctions.fireAtPlayer,
     none: BehaviourFunctions.none
 };
-//# sourceMappingURL=enemy-behaviours.js.map
+//# sourceMappingURL=enemy-behaviours-helpers.js.map
