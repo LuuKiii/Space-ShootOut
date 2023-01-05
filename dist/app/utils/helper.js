@@ -17,7 +17,14 @@ export class Helper {
     static calculateAngle(objA, objB) {
         return Math.atan2(objB.y - objA.y, objB.x - objA.x);
     }
-    static calculateVelocity(angle, speed) {
+    static calculateVelocityAngle(angle) {
+        return {
+            x: Math.cos(angle),
+            y: Math.sin(angle),
+        };
+    }
+    static calculateVelocity(angle, currentVelocity, speedModified) {
+        currentVelocity.x;
         return {
             x: Math.cos(angle),
             y: Math.sin(angle),

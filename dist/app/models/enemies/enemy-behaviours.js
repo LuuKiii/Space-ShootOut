@@ -17,7 +17,7 @@ class BehaviourFunctions {
             return;
         instace.destinationPoint = Helper.getCoordinatesInbound(50);
         instace.angle.moveAngle = Helper.calculateAngle(instace.position, instace.destinationPoint);
-        instace.delta = Helper.calculateVelocity(instace.angle.moveAngle, instace.movement.maxSpeed.forward);
+        instace.delta = Helper.calculateVelocityAngle(instace.angle.moveAngle);
         instace.movingAction = 0 /* MovingAction.Accelerating */;
     }
     static fireAtPlayer(instance) {
@@ -27,7 +27,7 @@ class BehaviourFunctions {
         if (!isToFire)
             return;
         const angle = Helper.calculateAngle(instance.position, Player.getPosition());
-        const { x, y } = Helper.calculateVelocity(angle, 0);
+        const { x, y } = Helper.calculateVelocityAngle(angle);
         const newProjectile = new SingleFire({ x: instance.position.x, y: instance.position.y }, { x: x, y: y }, ["player"]);
         const core = GameGlobalObject.getInstance();
         core.addEntity('enemyWeaponry', newProjectile);

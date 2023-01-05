@@ -2,6 +2,7 @@ import { CollisionHandler } from "../../core/collision-handler.js";
 import { Flags } from "../../core/global-flags.js";
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
+import { Helper } from "../../utils/helper.js";
 import { BaseShip } from "../base/base-ship.js";
 export class Player extends BaseShip {
     constructor(pos) {
@@ -26,6 +27,14 @@ export class Player extends BaseShip {
         // this._accelerationModifier = 0.05;
         // this._rotationModifier = 0.0001;
         // this._rotationMaxSpeed = 0.01;
+        this._movement.maxSpeed.forward = 1;
+        this._movement.maxSpeed.backwards = 0.5;
+        this._movement.maxSpeed.left = 0.5;
+        this._movement.maxSpeed.right = 0.5;
+        this._movement.accelerationModifier.forward = 0.01;
+        this._movement.accelerationModifier.backwards = 0.005;
+        this._movement.accelerationModifier.left = 0.005;
+        this._movement.accelerationModifier.right = 0.005;
         this._damageTakenFromCollision = 30;
     }
     draw() {
@@ -36,7 +45,7 @@ export class Player extends BaseShip {
         this.ctx.restore();
     }
     update() {
-        this.calculateMovement();
+        this.updateProperties();
         this._position.x += this.delta.x;
         this._position.y += this.delta.y;
         const colidesWith = CollisionCalculator.entitiesObjectIsIntersectingWith(this.originAndRadius, ['enemies']);
@@ -49,7 +58,18 @@ export class Player extends BaseShip {
             this.flags.playerDead = true;
         }
     }
-    calculateMovement() {
+    updateProperties() {
+        this.updateRotation();
+        this.updateDelta();
+        this._angle.rotation += this._angle.rotationSpeed;
+        if (!CollisionCalculator.isWholeInbouds(this.originAndRadius)) {
+            this._position.x -= this.delta.x;
+            this._position.y -= this.delta.y;
+            this._delta.x = -this.delta.x / 4;
+            this._delta.y = -this.delta.y / 4;
+        }
+    }
+    updateRotation() {
         if (this._angle.rotationSpeed > -this._angle.rotationMaxSpeed && this.canvasEvents.keyboard["q"]) {
             this._angle.rotationSpeed -= this._angle.rotationModifier;
         }
@@ -62,25 +82,31 @@ export class Player extends BaseShip {
                 ? this._angle.rotationSpeed + (-Math.sign(this._angle.rotationSpeed) * slowdown)
                 : 0;
         }
-        if (this.canvasEvents.keyboard["w"]) {
-            this._delta.y -= this._movement.accelerationModifier.forward;
+    }
+    updateDelta() {
+        const deltaModifier = this.delta;
+        if (this.canvasEvents.keyboard["w"] && this.delta.x < this.movement.maxSpeed.forward && this.delta.y < this.movement.maxSpeed.forward) {
+            const { x, y } = Helper.calculateVelocity(this._angle.facing, this.delta, this.movement.accelerationModifier.forward);
+            deltaModifier.x += x * this.movement.accelerationModifier.forward;
+            deltaModifier.y += y * this.movement.accelerationModifier.forward;
         }
         if (this.canvasEvents.keyboard["s"]) {
-            this._delta.y += this._movement.accelerationModifier.backwards;
+            const { x, y } = Helper.calculateVelocity(this._angle.facing - Math.PI, this.delta, this.movement.accelerationModifier.backwards);
+            deltaModifier.x += x * this.movement.accelerationModifier.backwards;
+            deltaModifier.y += y * this.movement.accelerationModifier.backwards;
         }
         if (this.canvasEvents.keyboard["a"]) {
-            this._delta.x -= this._movement.accelerationModifier.left;
+            const { x, y } = Helper.calculateVelocity(this._angle.facing - Math.PI * 0.5, this.delta, this.movement.accelerationModifier.left);
+            deltaModifier.x += x * this.movement.accelerationModifier.left;
+            deltaModifier.y += y * this.movement.accelerationModifier.left;
         }
         if (this.canvasEvents.keyboard["d"]) {
-            this._delta.x += this._movement.accelerationModifier.right;
+            const { x, y } = Helper.calculateVelocity(this._angle.facing + Math.PI * 0.5, this.delta, this.movement.accelerationModifier.right);
+            deltaModifier.x += x * this.movement.accelerationModifier.right;
+            deltaModifier.y += y * this.movement.accelerationModifier.right;
         }
-        this._angle.rotation += this._angle.rotationSpeed;
-        if (!CollisionCalculator.isWholeInbouds(this.originAndRadius)) {
-            this._position.x -= this.delta.x;
-            this._position.y -= this.delta.y;
-            this._delta.x = -this.delta.x / 4;
-            this._delta.y = -this.delta.y / 4;
-        }
+        this._delta.x = deltaModifier.x;
+        this._delta.y = deltaModifier.y;
     }
     static getInstance() {
         if (!Player.instance) {

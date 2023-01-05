@@ -24,7 +24,17 @@ export class Helper {
     return Math.atan2(objB.y - objA.y, objB.x - objA.x)
   }
 
-  static calculateVelocity(angle: number, speed: number): Vector {
+  static calculateVelocityAngle(angle: number): Vector {
+    return {
+      x: Math.cos(angle),
+      y: Math.sin(angle),
+    }
+  }
+
+  static calculateVelocity(angle: number, currentVelocity: Vector, speedModified: number): Vector {
+
+    currentVelocity.x
+
     return {
       x: Math.cos(angle),
       y: Math.sin(angle),
