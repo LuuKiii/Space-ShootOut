@@ -11,7 +11,7 @@ export class GameGlobalObject {
 
   //TODO ATM giving access to one of core properties also grants ability to modify given object outside of this class. Ensure its possible only within it.
   private _core: EntitiesCollection;
-  private _size: number = 0;
+  private _coreProperties: CoreProperties;
 
   private constructor() {
     this._core = {
@@ -20,6 +20,24 @@ export class GameGlobalObject {
       enemies: {},
       enemyWeaponry: {},
       misc: {},
+    }
+    this._coreProperties = {
+      player: {
+        size: 0
+      },
+      playerWeaponry: {
+        size: 0
+      },
+      enemies: {
+        size: 0
+      },
+      enemyWeaponry: {
+        size: 0
+      },
+      misc: {
+        size: 0
+      },
+      size: 0
     }
 
     this.createPlayer();
@@ -38,15 +56,17 @@ export class GameGlobalObject {
   }
 
   removeEntityFrom(from: keyof EntitiesCollection, id: string) {
-    this._size--;
+    this._coreProperties[from].size--;
+    this._coreProperties.size--;
     delete this._core[from][id];
   }
 
   addEntity<CoreProperty extends keyof EntitiesCollection, InnerProperty extends keyof EntitiesCollection[CoreProperty]>(coreKey: CoreProperty, entity: EntitiesCollection[CoreProperty][InnerProperty]): void {
     const generatedID: string = Helper.generateID();
     entity.id = generatedID;
-    this._size++;
     this._core[coreKey][generatedID] = entity;
+    this._coreProperties[coreKey].size++;
+    this._coreProperties.size++;
   }
 
   updateAndDrawAllEntities(): void {
@@ -88,7 +108,7 @@ export class GameGlobalObject {
   }
 
   spawner() {
-    while (this.size < 5) {
+    while (this.enemySize < 5) {
       this.createRandomBasicEnemy();
     }
   }
@@ -99,8 +119,12 @@ export class GameGlobalObject {
     this.addEntity("enemies", enemy);
   }
 
-  get size() {
-    return this._size;
+  get coreSize() {
+    return this._coreProperties.size;
+  }
+
+  get enemySize() {
+    return this._coreProperties.enemies.size;
   }
 
   static getInstance() {
@@ -129,4 +153,14 @@ interface EntitiesCollection {
   misc: {
     [key: string]: BaseShip;
   };
+}
+
+type EntitiesCollectionProperties = {
+  [key in keyof EntitiesCollection]: {
+    size: number;
+  }
+}
+
+type CoreProperties = EntitiesCollectionProperties & {
+  size: number
 }

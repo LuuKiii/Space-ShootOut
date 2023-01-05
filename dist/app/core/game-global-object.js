@@ -3,13 +3,30 @@ import { Helper } from "../utils/helper.js";
 import { DroneShip } from "../models/enemies/drone-ship.js";
 export class GameGlobalObject {
     constructor() {
-        this._size = 0;
         this._core = {
             player: {},
             playerWeaponry: {},
             enemies: {},
             enemyWeaponry: {},
             misc: {},
+        };
+        this._coreProperties = {
+            player: {
+                size: 0
+            },
+            playerWeaponry: {
+                size: 0
+            },
+            enemies: {
+                size: 0
+            },
+            enemyWeaponry: {
+                size: 0
+            },
+            misc: {
+                size: 0
+            },
+            size: 0
         };
         this.createPlayer();
     }
@@ -24,14 +41,16 @@ export class GameGlobalObject {
         return this._core.player[Object.keys(this._core.player)[0]];
     }
     removeEntityFrom(from, id) {
-        this._size--;
+        this._coreProperties[from].size--;
+        this._coreProperties.size--;
         delete this._core[from][id];
     }
     addEntity(coreKey, entity) {
         const generatedID = Helper.generateID();
         entity.id = generatedID;
-        this._size++;
         this._core[coreKey][generatedID] = entity;
+        this._coreProperties[coreKey].size++;
+        this._coreProperties.size++;
     }
     updateAndDrawAllEntities() {
         for (const coreProp in this._core) {
@@ -67,7 +86,7 @@ export class GameGlobalObject {
         return returnArr;
     }
     spawner() {
-        while (this.size < 5) {
+        while (this.enemySize < 5) {
             this.createRandomBasicEnemy();
         }
     }
@@ -76,8 +95,11 @@ export class GameGlobalObject {
         const enemy = new DroneShip(point);
         this.addEntity("enemies", enemy);
     }
-    get size() {
-        return this._size;
+    get coreSize() {
+        return this._coreProperties.size;
+    }
+    get enemySize() {
+        return this._coreProperties.enemies.size;
     }
     static getInstance() {
         if (!GameGlobalObject.instance) {
