@@ -1,8 +1,8 @@
-import { GameGlobalObject } from "../../core/game-global-object.js";
+import { GameGlobalObject } from "../../core/game/global-object.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
 import { Player } from "../player/player.js";
-import { SingleFire } from "../weaponry/single-fire.js";
+import { SingleFire } from "../weaponry/cannon.js";
 import { MovingAction } from "./enemy-behaviours.js";
 export class BehaviourFunctions {
     static faceTowardsPlayer(instance) {

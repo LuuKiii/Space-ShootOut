@@ -1,1 +1,0 @@
-{"version":3,"file":"player.js","sourceRoot":"","sources":["../../../../src/app/models/ships/player.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,YAAY,CAAC;AAEtC,MAAM,OAAO,MAAO,SAAQ,QAAQ;IAClC,YAAY,CAAS,EAAE,CAAS;QAC9B,KAAK,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC;IAEd,CAAC;CACF"}

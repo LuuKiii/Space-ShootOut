@@ -1,4 +1,4 @@
-import { GameGlobalObject } from "../core/game-global-object.js";
+import { GameGlobalObject } from "../core/game/global-object.js";
 import { Canvas } from "../ui/canvas.js";
 export class CollisionCalculator {
     constructor() { }

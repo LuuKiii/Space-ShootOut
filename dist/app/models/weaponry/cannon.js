@@ -44,4 +44,4 @@ export class SingleFire extends BaseProjectile {
         return this._radius;
     }
 }
-//# sourceMappingURL=single-fire.js.map
+//# sourceMappingURL=cannon.js.map

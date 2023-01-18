@@ -1,4 +1,4 @@
-import { CollisionHandler } from "../../core/collision-handler.js";
+import { CollisionHandler } from "../../core/handlers/collision-handler.js";
 import { Flags } from "../../core/global-flags.js";
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator } from "../../utils/collision-calculator.js";
@@ -31,7 +31,7 @@ export class Player extends BaseShip {
         this._movement.maxSpeed.backwards = 0.5;
         this._movement.maxSpeed.left = 0.5;
         this._movement.maxSpeed.right = 0.5;
-        this._movement.accelerationModifier.forward = 0.01;
+        this._movement.accelerationModifier.forward = 0.1;
         this._movement.accelerationModifier.backwards = 0.005;
         this._movement.accelerationModifier.left = 0.005;
         this._movement.accelerationModifier.right = 0.005;

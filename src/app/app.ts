@@ -1,54 +1,25 @@
-import { MenuElement } from "./ui/menu.js"
-import { HudElement } from "./ui/hud.js";
-import { GameGlobalObject } from "./core/game-global-object.js";
-import { RenderBackground } from "./core/render-background.js";
-import { PlayerWeaponHandler } from "./core/player-weapon-handler.js";
-import { Observer } from "./utils/observer.js";
+import { GameGlobalObject } from "./core/game/global-object.js";
+import { GameLoop } from "./core/game/main-loop.js";
 import { Flags } from "./core/global-flags.js";
+import { PlayerWeaponHandler } from "./core/handlers/player-weapon-handler.js";
+import { HudElement } from "./ui/hud.js";
+import { MenuElement } from "./ui/menu.js";
+import { RenderBackground } from "./ui/renderers/render-background.js";
+import { Observer } from "./utils/observer.js";
 
-class App implements Observer {
+
+class App {
   private menu: MenuElement;
   private hud: HudElement;
-  private globalObj: GameGlobalObject;
-  private playerWeaponHanlder: PlayerWeaponHandler;
-  private renderBg: RenderBackground;
-  private flags: Flags;
 
-  private shouldAnimate: boolean;
+  private gameLoop: GameLoop;
 
   constructor() {
     this.menu = MenuElement.getInstance();
     this.hud = HudElement.getInstance();
-    this.globalObj = GameGlobalObject.getInstance();
-    this.playerWeaponHanlder = PlayerWeaponHandler.getInstance();
-    this.renderBg = RenderBackground.getInstance();
-    this.flags = Flags.getInstance();
-
-    this.shouldAnimate = true;
-
-    this.setup();
+    this.gameLoop = GameLoop.getInstance();
+    this.gameLoop.startAnimating();
   }
-
-  private setup() {
-    this.flags.register(this);
-    this.animate();
-  }
-
-  animate() {
-    this.renderBg.drawBackground();
-    this.globalObj.updateAndDrawAllEntities();
-    this.globalObj.spawner();
-    this.playerWeaponHanlder.playerFiring();
-
-    if (this.shouldAnimate) {
-      requestAnimationFrame(this.animate.bind(this))
-    }
-  }
-
-  updateFromSubject(): void {
-    // this.shouldAnimate = false;
-  }
-
 }
 
 const app = new App()
