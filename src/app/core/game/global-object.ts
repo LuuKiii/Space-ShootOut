@@ -1,9 +1,9 @@
-import { BaseEntity } from "../../models/base/base-entity.js";
-import { BaseProjectile } from "../../models/base/base-projectile.js";
-import { BaseShip } from "../../models/base/base-ship.js";
-import { DroneShip } from "../../models/enemies/drone-ship.js";
-import { Player } from "../../models/player/player.js";
-import { Helper, Side } from "../../utils/helper.js";
+import { BaseEntity } from "../../models/base/base-entity";
+import { BaseProjectile } from "../../models/base/base-projectile";
+import { BaseShip } from "../../models/base/base-ship";
+import { DroneShip } from "../../models/enemies/drone-ship";
+import { Player } from "../../models/player/player";
+import { Helper, Side } from "../../utils/helper";
 
 
 export class GameGlobalObject {

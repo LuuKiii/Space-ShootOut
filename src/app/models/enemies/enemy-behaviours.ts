@@ -1,4 +1,4 @@
-import { BehaviourFunctions } from "./enemy-behaviours-functions.js";
+import { BehaviourFunctions } from "./enemy-behaviours-functions";
 
 
 export interface EnemyCooldowns {

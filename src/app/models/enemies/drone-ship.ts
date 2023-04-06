@@ -1,9 +1,9 @@
-import { Canvas } from "../../ui/canvas.js";
-import { Helper } from "../../utils/helper.js";
-import { BaseEnemy } from "../base/base-enemy.js";
-import { Point, MovementConsts, Angle, Vector } from "../base/base-types.js";
-import { WeaponryTypes } from "../base/base-projectile.js";
-import { MovingAction, FacingBehaviours, MovementBehaviours, FiringBehaviours, shipBehaviours } from "./enemy-behaviours.js";
+import { Canvas } from "../../ui/canvas";
+import { Helper } from "../../utils/helper";
+import { BaseEnemy } from "../base/base-enemy";
+import { Point, MovementConsts, Angle, Vector } from "../base/base-types";
+import { WeaponryTypes } from "../base/base-projectile";
+import { MovingAction, FacingBehaviours, MovementBehaviours, FiringBehaviours, shipBehaviours } from "./enemy-behaviours";
 
 export class DroneShip extends BaseEnemy {
   protected ctx: CanvasRenderingContext2D;

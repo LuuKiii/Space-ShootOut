@@ -1,8 +1,8 @@
-import { SingleFire } from "../../models/weaponry/cannon.js";
-import { CanvasEvents } from "../../ui/canvas.js";
-import { Helper } from "../../utils/helper.js";
-import { ObserverCanvas } from "../../utils/observer.js";
-import { GameGlobalObject } from "../game/global-object.js";
+import { SingleFire } from "../../models/weaponry/cannon";
+import { CanvasEvents } from "../../ui/canvas";
+import { Helper } from "../../utils/helper";
+import { ObserverCanvas } from "../../utils/observer";
+import { GameGlobalObject } from "../game/global-object";
 
 
 export class PlayerWeaponHandler implements ObserverCanvas {

@@ -1,6 +1,6 @@
-import { Point, Vector } from "../models/base/base-types.js";
-import { Canvas } from "../ui/canvas.js";
-import { OriginAndRadius } from "./collision-calculator.js";
+import { Point, Vector } from "../models/base/base-types";
+import { Canvas } from "../ui/canvas";
+import { OriginAndRadius } from "./collision-calculator";
 
 export class Helper {
   static generateID() {

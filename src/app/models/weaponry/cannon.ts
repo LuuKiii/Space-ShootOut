@@ -1,10 +1,10 @@
-import { EntityTypes } from "../../core/game/global-object.js";
-import { CollisionHandler } from "../../core/handlers/collision-handler.js";
-import { Canvas } from "../../ui/canvas.js";
-import { CollisionCalculator } from "../../utils/collision-calculator.js";
-import { BaseProjectile } from "../base/base-projectile.js";
-import { BaseShip } from "../base/base-ship.js";
-import { Point, Vector } from "../base/base-types.js";
+import { EntityTypes } from "../../core/game/global-object";
+import { CollisionHandler } from "../../core/handlers/collision-handler";
+import { Canvas } from "../../ui/canvas";
+import { CollisionCalculator } from "../../utils/collision-calculator";
+import { BaseProjectile } from "../base/base-projectile";
+import { BaseShip } from "../base/base-ship";
+import { Point, Vector } from "../base/base-types";
 
 export class SingleFire extends BaseProjectile {
   protected ctx: CanvasRenderingContext2D;

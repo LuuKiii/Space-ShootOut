@@ -1,7 +1,7 @@
-import { BaseEnemy } from "../../models/base/base-enemy.js";
-import { BaseProjectile } from "../../models/base/base-projectile.js";
-import { BaseShip } from "../../models/base/base-ship.js";
-import { Player } from "../../models/player/player.js";
+import { BaseEnemy } from "../../models/base/base-enemy";
+import { BaseProjectile } from "../../models/base/base-projectile";
+import { BaseShip } from "../../models/base/base-ship";
+import { Player } from "../../models/player/player";
 
 export class CollisionHandler {
   static updateCollidedShips(...args: [BaseShip, BaseShip]) {

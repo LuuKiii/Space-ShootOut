@@ -1,5 +1,5 @@
-import { BaseEntity } from "./base-entity.js";
-import { MovementConsts, Angle, Vector } from "./base-types.js";
+import { BaseEntity } from "./base-entity";
+import { MovementConsts, Angle, Vector } from "./base-types";
 
 export abstract class BaseShip extends BaseEntity {
   protected abstract _movement: MovementConsts;

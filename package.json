@@ -1,12 +1,31 @@
 {
-  "name": "space-shootout",
+  "name": "my-webpack-project",
   "homepage": "https://github.com/Pupanek/Space-Shootout",
-  "version": "",
+  "version": "1.0.0",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+    "serve": "webpack serve"
   },
   "devDependencies": {
-    "typescript": "^4.9.4"
-  }
+    "@types/webpack-env": "^1.18.0",
+    "@webpack-cli/generators": "^3.0.1",
+    "css-loader": "^6.7.3",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "prettier": "^2.8.1",
+    "sass": "^1.60.0",
+    "sass-loader": "^13.2.2",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "webpack": "^5.78.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.1",
+    "workbox-webpack-plugin": "^6.5.4"
+  },
+  "description": "Space-ShootOut"
 }

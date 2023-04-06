@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
+    <title>Space-ShootOut</title>
+</head>
+
+<body>
+    <div class="container" tabindex="1">
+        <section class="menu">
+            <h3 class="menu__title">Space Shootout</h3>
+            <button class="btn menu__new-game">New Game</button>
+        </section>
+        <section class="hud">
+            <div class="hud__container hud__life">
+                <h3 class="hud__container--title">Hull Integrity</h3>
+                <span class="hud__container--value">100%</span>
+            </div>
+            <div class="hud__container hud__points">
+                <h3 class="hud__container--title">Points</h3>
+                <span class="hud__container--value">0</span>
+            </div>
+        </section>
+        <main class="main">
+            <canvas id="main__canvas"></canvas>
+        </main>
+    </div>
+</body>
+
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker
+                .register("service-worker.js")
+                .then((registration) => {
+                    console.log("Service Worker registered: ", registration);
+                })
+                .catch((registrationError) => {
+                    console.error("Service Worker registration failed: ", registrationError);
+                });
+        });
+    }
+</script>
+
+</html>

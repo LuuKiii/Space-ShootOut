@@ -1,7 +1,7 @@
-import { MovingAction, FacingBehaviours, MovementBehaviours, FiringBehaviours, EnumMovingAction } from "../enemies/enemy-behaviours.js";
-import { Angle, Point } from "./base-types.js";
-import { WeaponryTypes } from "./base-projectile.js";
-import { BaseShip } from "./base-ship.js";
+import { MovingAction, FacingBehaviours, MovementBehaviours, FiringBehaviours, EnumMovingAction } from "../enemies/enemy-behaviours";
+import { Angle, Point } from "./base-types";
+import { WeaponryTypes } from "./base-projectile";
+import { BaseShip } from "./base-ship";
 
 export abstract class BaseEnemy extends BaseShip {
   abstract movingAction: EnumMovingAction;

@@ -1,5 +1,5 @@
-import { OriginAndRadius } from "../../utils/collision-calculator.js";
-import { Point, Vector } from "./base-types.js";
+import { OriginAndRadius } from "../../utils/collision-calculator";
+import { Point, Vector } from "./base-types";
 
 export abstract class BaseEntity {
   private _id: string | undefined;

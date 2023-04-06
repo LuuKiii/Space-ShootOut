@@ -1,4 +1,4 @@
-import { Canvas } from "../canvas.js";
+import { Canvas } from "../canvas";
 
 export class RenderBackground {
   static instance: RenderBackground;

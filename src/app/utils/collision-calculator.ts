@@ -1,6 +1,6 @@
-import { EntityTypes, GameGlobalObject } from "../core/game/global-object.js";
-import { BaseEntity } from "../models/base/base-entity.js";
-import { Canvas } from "../ui/canvas.js";
+import { EntityTypes, GameGlobalObject } from "../core/game/global-object";
+import { BaseEntity } from "../models/base/base-entity";
+import { Canvas } from "../ui/canvas";
 
 
 export class CollisionCalculator {

@@ -1,10 +1,10 @@
-import { CollisionHandler } from "../../core/handlers/collision-handler.js";
-import { Flags } from "../../core/global-flags.js";
-import { Canvas, CanvasEvents } from "../../ui/canvas.js";
-import { CollisionCalculator, OriginAndRadius } from "../../utils/collision-calculator.js";
-import { Helper } from "../../utils/helper.js";
-import { BaseShip } from "../base/base-ship.js";
-import { Angle, MovementConsts, Point, Vector } from "../base/base-types.js";
+import { CollisionHandler } from "../../core/handlers/collision-handler";
+import { Flags } from "../../core/global-flags";
+import { Canvas, CanvasEvents } from "../../ui/canvas";
+import { CollisionCalculator, OriginAndRadius } from "../../utils/collision-calculator";
+import { Helper } from "../../utils/helper";
+import { BaseShip } from "../base/base-ship";
+import { Angle, MovementConsts, Point, Vector } from "../base/base-types";
 
 export class Player extends BaseShip {
   static instance: Player;

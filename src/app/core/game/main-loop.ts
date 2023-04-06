@@ -1,9 +1,9 @@
-import { RenderBackground } from "../../ui/renderers/render-background.js";
-import { FrameLimiter, GlobalSettings } from "../../utils/debug.js";
-import { Observer } from "../../utils/observer.js";
-import { Flags } from "../global-flags.js";
-import { PlayerWeaponHandler } from "../handlers/player-weapon-handler.js";
-import { GameGlobalObject } from "./global-object.js";
+import { RenderBackground } from "../../ui/renderers/render-background";
+import { FrameLimiter, GlobalSettings } from "../../utils/debug";
+import { Observer } from "../../utils/observer";
+import { Flags } from "../global-flags";
+import { PlayerWeaponHandler } from "../handlers/player-weapon-handler";
+import { GameGlobalObject } from "./global-object";
 
 export class GameLoop implements Observer {
   private static instance: GameLoop;
