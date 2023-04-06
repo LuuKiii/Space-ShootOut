@@ -8,8 +8,9 @@ export class DroneShip extends BaseEnemy {
         this.image = new Image();
         this.movingAction = MovingAction.Stopped;
         this.destinationPoint = null;
+        this.targetFacing = 11 / 6 * Math.PI;
         this.behaviours = ['faceTowardsPlayer', 'moveToRandomWaypointAndStop', "fireAtPlayer"];
-        this.weaponry = 'SingleFire';
+        this.weaponry = 'Cannon';
         this.ctx = Canvas.getContext();
         this._position = pos;
         this._movement = this.createMovementObject();
@@ -22,8 +23,6 @@ export class DroneShip extends BaseEnemy {
         };
         this.image.src = "/assets/SCruiser.png";
         this._radius = 30;
-        // this._maxSpeed = 1;
-        // this._accelerationModifier = 0.005;
         this._health = 100;
         this._damageDealtByColliding = 30;
         this._damageTakenFromCollision = 1000;
@@ -43,7 +42,9 @@ export class DroneShip extends BaseEnemy {
         if (this.movingAction !== MovingAction.Stopped) {
             this.calculateMovement();
         }
-        this.updateFromBehaviours();
+        // this.updateFromBehaviours()
+        this.updateRotation();
+        this.angle.rotation += this.angle.rotationSpeed;
         if (this._health <= 0) {
             this._isToBeRemoved = true;
         }
@@ -55,21 +56,21 @@ export class DroneShip extends BaseEnemy {
     }
     //TODO This requires work. like - a lot.
     calculateMovement() {
-        // naive aproach - forward movement is applied to movement in any direction
-        if (this.movingAction === MovingAction.Accelerating) {
-            this._movement.acceleration.forward = this._movement.acceleration.forward + this._movement.accelerationModifier.forward > this._movement.maxSpeed.forward
-                ? this._movement.maxSpeed.forward
-                : this._movement.acceleration.forward + this._movement.accelerationModifier.forward;
-        }
-        if (this.movingAction === MovingAction.Decelerating) {
-            this._movement.acceleration.forward = this._movement.acceleration.forward - this._movement.accelerationModifier.forward > 0
-                ? this._movement.acceleration.forward - this._movement.accelerationModifier.forward
-                : 0;
-        }
-        // if (this.movingAction === MovingAction.Moving) {
+        // // naive aproach - forward movement is applied to movement in any direction
+        // if (this.movingAction === MovingAction.Accelerating) {
+        //   this._movement.acceleration.forward = this._movement.acceleration.forward + this._movement.accelerationModifier.forward > this._movement.maxSpeed
+        //     ? this._movement.maxSpeed
+        //     : this._movement.acceleration.forward + this._movement.accelerationModifier.forward;
         // }
-        this._position.x += this.delta.x * this._movement.acceleration.forward;
-        this._position.y += this.delta.y * this._movement.acceleration.forward;
+        // if (this.movingAction === MovingAction.Decelerating) {
+        //   this._movement.acceleration.forward = this._movement.acceleration.forward - this._movement.accelerationModifier.forward > 0
+        //     ? this._movement.acceleration.forward - this._movement.accelerationModifier.forward
+        //     : 0;
+        // }
+        // // if (this.movingAction === MovingAction.Moving) {
+        // // }
+        this._position.x += this.delta.x;
+        this._position.y += this.delta.y;
         this.updateMovingAction();
     }
     updateMovingAction() {
@@ -77,6 +78,38 @@ export class DroneShip extends BaseEnemy {
         if (Helper.calculateDistanceBetweenPoints(this.position, this.destinationPoint) < breakingpoint) {
             this.movingAction = MovingAction.Decelerating;
         }
+    }
+    updateRotation() {
+        if (this.targetFacing === null)
+            return;
+        // if (Math.abs(this.angle.facing % Math.PI * 2) < this.targetFacing) {
+        //   this.angle.rotationSpeed = 0;
+        //   this.targetFacing = null;
+        //   return;
+        // }
+        const angularVelocity = this.angle.rotationSpeed ** 2 / (2 * this.angle.rotationModifier);
+        console.log(angularVelocity);
+        if (this.angle.rotationSpeed < angularVelocity) {
+        }
+        else {
+        }
+        console.log(this.targetFacing);
+        console.log(this.targetFacing - this.angle.facing);
+        console.log("==============================================");
+        if (this.targetFacing - this.angle.facing > 0) {
+            this.angle.rotationSpeed += this.angle.rotationModifier;
+        }
+        else {
+            this.angle.rotationSpeed -= this.angle.rotationModifier;
+        }
+        if (Math.abs(this.angle.rotationSpeed) > this.angle.rotationMaxSpeed) {
+            this.angle.rotationSpeed = Math.sign(this.angle.rotationSpeed) * this.angle.rotationMaxSpeed;
+        }
+    }
+    updateDelta() {
+    }
+    calculateDeltaModifier(currentVelocity, angle, deltaModifier, accelerationModifier, maxSpeed) {
+        return { x: 0, y: 0 };
     }
 }
 //# sourceMappingURL=drone-ship.js.map

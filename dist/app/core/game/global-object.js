@@ -3,6 +3,7 @@ import { Player } from "../../models/player/player.js";
 import { Helper } from "../../utils/helper.js";
 export class GameGlobalObject {
     constructor() {
+        this.testCounter = 1;
         this._core = {
             player: {},
             playerWeaponry: {},
@@ -86,12 +87,16 @@ export class GameGlobalObject {
         return returnArr;
     }
     spawner() {
+        if (this.testCounter <= 0)
+            return;
+        this.testCounter--;
         while (this.enemySize < 5) {
             this.createRandomBasicEnemy();
         }
     }
     createRandomBasicEnemy() {
-        const point = Helper.getCoordinatesOutOfBounds(50, 0 /* Side.Up */);
+        // const point = Helper.getCoordinatesOutOfBounds(50, Side.Up);
+        const point = { x: 100, y: 100 };
         const enemy = new DroneShip(point);
         this.addEntity("enemies", enemy);
     }

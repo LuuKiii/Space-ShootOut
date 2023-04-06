@@ -3,13 +3,13 @@ import { Flags } from "../../core/global-flags.js";
 import { Canvas, CanvasEvents } from "../../ui/canvas.js";
 import { CollisionCalculator, OriginAndRadius } from "../../utils/collision-calculator.js";
 import { Helper } from "../../utils/helper.js";
-import { Point, Vector } from "../base/base-entity.js";
-import { Angle, BaseShip, Movement } from "../base/base-ship.js";
+import { BaseShip } from "../base/base-ship.js";
+import { Angle, MovementConsts, Point, Vector } from "../base/base-types.js";
 
 export class Player extends BaseShip {
   static instance: Player;
 
-  protected _movement: Movement;
+  protected _movement: MovementConsts;
   protected _angle: Angle;
 
   protected ctx: CanvasRenderingContext2D;
@@ -38,19 +38,12 @@ export class Player extends BaseShip {
 
     this._health = 100;
     this._radius = 30;
-    // this._maxSpeed = 3;
-    // this._accelerationModifier = 0.05;
-    // this._rotationModifier = 0.0001;
-    // this._rotationMaxSpeed = 0.01;
 
-    this._movement.maxSpeed.forward = 1;
-    this._movement.maxSpeed.backwards = 0.5;
-    this._movement.maxSpeed.left = 0.5;
-    this._movement.maxSpeed.right = 0.5;
-    this._movement.accelerationModifier.forward = 0.1;
-    this._movement.accelerationModifier.backwards = 0.005;
-    this._movement.accelerationModifier.left = 0.005;
-    this._movement.accelerationModifier.right = 0.005;
+    this._movement.maxSpeed = 1;
+    this._movement.acceleration.forward = 0.08;
+    this._movement.acceleration.backwards = 0.03;
+    this._movement.acceleration.left = 0.03;
+    this._movement.acceleration.right = 0.03;
     this._damageTakenFromCollision = 30;
   }
 
@@ -59,7 +52,7 @@ export class Player extends BaseShip {
     this.ctx.save();
     this.ctx.translate(this.position.x, this.position.y)
     this.ctx.rotate(this._angle.rotation);
-    this.ctx.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius)
+    this.ctx.drawImage(this.image, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius);
     this.ctx.restore();
   }
 
@@ -85,7 +78,7 @@ export class Player extends BaseShip {
     this.updateRotation()
     this.updateDelta()
 
-    this._angle.rotation += this._angle.rotationSpeed;
+    this.angle.rotation += this.angle.rotationSpeed;
 
     if (!CollisionCalculator.isWholeInbouds(this.originAndRadius)) {
       this._position.x -= this.delta.x;
@@ -96,45 +89,53 @@ export class Player extends BaseShip {
   }
 
   updateRotation() {
-    if (this._angle.rotationSpeed > -this._angle.rotationMaxSpeed && this.canvasEvents.keyboard["q"]) {
-      this._angle.rotationSpeed -= this._angle.rotationModifier
-    } else if (this._angle.rotationSpeed < this._angle.rotationMaxSpeed && this.canvasEvents.keyboard["e"]) {
-      this._angle.rotationSpeed += this._angle.rotationModifier
+    // console.log(this.angle.facing)
+    if (this.angle.rotationSpeed > -this.angle.rotationMaxSpeed && this.canvasEvents.keyboard["q"]) {
+      this.angle.rotationSpeed -= this.angle.rotationModifier
+    } else if (this.angle.rotationSpeed < this.angle.rotationMaxSpeed && this.canvasEvents.keyboard["e"]) {
+      this.angle.rotationSpeed += this.angle.rotationModifier
     } else {
-      const slowdown = 0.3 * this._angle.rotationModifier;
-      this._angle.rotationSpeed = Math.abs(this._angle.rotationSpeed) - this._angle.rotationModifier > 0
-        ? this._angle.rotationSpeed + (-Math.sign(this._angle.rotationSpeed) * slowdown)
+      const slowdown = 0.3 * this.angle.rotationModifier;
+      this.angle.rotationSpeed = Math.abs(this.angle.rotationSpeed) - this.angle.rotationModifier > 0
+        ? this.angle.rotationSpeed + (-Math.sign(this.angle.rotationSpeed) * slowdown)
         : 0;
     }
   }
 
   updateDelta() {
-    const deltaModifier: Vector = this.delta;
+    let deltaModifier: Vector = this.delta;
+    const currentVelocity = Math.sqrt(this.delta.x ** 2 + this.delta.y ** 2);
 
-    if (this.canvasEvents.keyboard["w"] && this.delta.x < this.movement.maxSpeed.forward && this.delta.y < this.movement.maxSpeed.forward) {
-      const { x, y } = Helper.calculateVelocity(this._angle.facing, this.delta, this.movement.accelerationModifier.forward)
-      deltaModifier.x += x * this.movement.accelerationModifier.forward;
-      deltaModifier.y += y * this.movement.accelerationModifier.forward;
+    if (this.canvasEvents.keyboard["w"]) {
+      deltaModifier = this.calculateDeltaModifier(currentVelocity, this.angle.facing, deltaModifier, this.movement.acceleration.forward, this.movement.maxSpeed);
     }
     if (this.canvasEvents.keyboard["s"]) {
-      const { x, y } = Helper.calculateVelocity(this._angle.facing - Math.PI, this.delta, this.movement.accelerationModifier.backwards)
-      deltaModifier.x += x * this.movement.accelerationModifier.backwards;
-      deltaModifier.y += y * this.movement.accelerationModifier.backwards;
+      deltaModifier = this.calculateDeltaModifier(currentVelocity, this.angle.facing - Math.PI, deltaModifier, this.movement.acceleration.backwards, this.movement.maxSpeed);
     }
     if (this.canvasEvents.keyboard["a"]) {
-      const { x, y } = Helper.calculateVelocity(this._angle.facing - Math.PI * 0.5, this.delta, this.movement.accelerationModifier.left)
-      deltaModifier.x += x * this.movement.accelerationModifier.left;
-      deltaModifier.y += y * this.movement.accelerationModifier.left;
+      deltaModifier = this.calculateDeltaModifier(currentVelocity, this.angle.facing - Math.PI * 0.5, deltaModifier, this.movement.acceleration.left, this.movement.maxSpeed);
     }
     if (this.canvasEvents.keyboard["d"]) {
-      const { x, y } = Helper.calculateVelocity(this._angle.facing + Math.PI * 0.5, this.delta, this.movement.accelerationModifier.right)
-      deltaModifier.x += x * this.movement.accelerationModifier.right;
-      deltaModifier.y += y * this.movement.accelerationModifier.right;
+      deltaModifier = this.calculateDeltaModifier(currentVelocity, this.angle.facing + Math.PI * 0.5, deltaModifier, this.movement.acceleration.right, this.movement.maxSpeed);
     }
-
 
     this._delta.x = deltaModifier.x;
     this._delta.y = deltaModifier.y;
+  }
+
+  calculateDeltaModifier(currentVelocity: number, angle: number, deltaModifier: Vector, accelerationModifier: number, maxSpeed: number): Vector {
+    const { x, y } = Helper.calculateVelocity(angle, this.delta, accelerationModifier)
+
+    if (currentVelocity >= maxSpeed) {
+      const velocityRatio = maxSpeed / currentVelocity;
+
+      deltaModifier.x *= velocityRatio;
+      deltaModifier.y *= velocityRatio;
+    }
+
+    deltaModifier.x += x / 4 * accelerationModifier;
+    deltaModifier.y += y / 4 * accelerationModifier;
+    return deltaModifier;
   }
 
   static getInstance() {

@@ -12,6 +12,7 @@ export class GameGlobalObject {
   //TODO ATM giving access to one of core properties also grants ability to modify given object outside of this class. Ensure its possible only within it.
   private _core: EntitiesCollection;
   private _coreProperties: CoreProperties;
+  private testCounter = 1;
 
   private constructor() {
     this._core = {
@@ -108,13 +109,17 @@ export class GameGlobalObject {
   }
 
   spawner() {
+    if (this.testCounter <= 0) return;
+
+    this.testCounter--;
     while (this.enemySize < 5) {
       this.createRandomBasicEnemy();
     }
   }
 
   createRandomBasicEnemy() {
-    const point = Helper.getCoordinatesOutOfBounds(50, Side.Up);
+    // const point = Helper.getCoordinatesOutOfBounds(50, Side.Up);
+    const point = { x: 100, y: 100 }
     const enemy = new DroneShip(point);
     this.addEntity("enemies", enemy);
   }

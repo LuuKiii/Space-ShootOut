@@ -1,4 +1,4 @@
-import { Point, Vector } from "../models/base/base-entity.js";
+import { Point, Vector } from "../models/base/base-types.js";
 import { Canvas } from "../ui/canvas.js";
 import { OriginAndRadius } from "./collision-calculator.js";
 

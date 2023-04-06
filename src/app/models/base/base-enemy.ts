@@ -1,11 +1,13 @@
 import { MovingAction, FacingBehaviours, MovementBehaviours, FiringBehaviours, EnumMovingAction } from "../enemies/enemy-behaviours.js";
-import { Point } from "./base-entity.js";
+import { Angle, Point } from "./base-types.js";
 import { WeaponryTypes } from "./base-projectile.js";
 import { BaseShip } from "./base-ship.js";
 
 export abstract class BaseEnemy extends BaseShip {
   abstract movingAction: EnumMovingAction;
   abstract destinationPoint: Point | null;
+  abstract targetFacing: number | null;
+
   abstract behaviours: [FacingBehaviours, MovementBehaviours, FiringBehaviours];
   abstract weaponry: WeaponryTypes | null;
   abstract updateFromBehaviours(): void;
@@ -22,5 +24,4 @@ export abstract class BaseEnemy extends BaseShip {
 
 export type EnemyChance = {
   toFire: number;
-
 }

@@ -23,4 +23,4 @@ export abstract class BaseProjectile extends BaseEntity {
   }
 }
 
-export type WeaponryTypes = 'SingleFire' | 'none';
+export type WeaponryTypes = 'Cannon' | 'none';

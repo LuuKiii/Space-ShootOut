@@ -1,11 +1,6 @@
 import { BaseEntity } from "./base-entity.js";
 export class BaseShip extends BaseEntity {
     constructor() {
-        // protected _maxSpeed: number = 0;
-        // protected _acceleration: number = 0;
-        // protected _accelerationModifier: number = 0;
-        // protected _sideWayAcceleration: number = 0;
-        // protected _sideWayAccelerationModifier: number = 0;
         super(...arguments);
         this._health = 0;
         this._damageTakenFromCollision = 0;
@@ -16,19 +11,8 @@ export class BaseShip extends BaseEntity {
         const defaultMaxSpeed = 1;
         const defaultAccelerationModifier = 0.05;
         return {
-            maxSpeed: {
-                forward: defaultMaxSpeed,
-                left: defaultMaxSpeed,
-                right: defaultMaxSpeed,
-                backwards: defaultMaxSpeed,
-            },
+            maxSpeed: defaultMaxSpeed,
             acceleration: {
-                forward: 0,
-                left: 0,
-                right: 0,
-                backwards: 0,
-            },
-            accelerationModifier: {
                 forward: defaultAccelerationModifier,
                 left: defaultAccelerationModifier,
                 right: defaultAccelerationModifier,
@@ -44,7 +28,7 @@ export class BaseShip extends BaseEntity {
             rotationMaxSpeed: 0.025,
             rotationModifier: 0.001,
             get facing() {
-                return this.rotation - 0.5 * Math.PI;
+                return (this.rotation - 0.5 * Math.PI) % Math.PI * 2;
             },
             moveAngle: 0
         };
