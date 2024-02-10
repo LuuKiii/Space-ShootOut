@@ -1,4 +1,5 @@
 import { Canvas } from "../canvas";
+import { ResourceHandler } from "../../common/resourceHandler"; // Import the ResourceHandler class
 
 export class RenderBackground {
   static instance: RenderBackground;
@@ -17,7 +18,8 @@ export class RenderBackground {
     this.image.onload = () => {
       this.resourcesLoaded = true;
     }
-    this.image.src = "/src/assets/nebula.jpg";
+
+    this.image.src = ResourceHandler.getResourcePath('nebula.jpg');
   }
 
   drawBackground() {

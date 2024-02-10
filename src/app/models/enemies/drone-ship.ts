@@ -4,6 +4,7 @@ import { BaseEnemy } from "../base/base-enemy";
 import { Point, MovementConsts, Angle, Vector } from "../base/base-types";
 import { WeaponryTypes } from "../base/base-projectile";
 import { MovingAction, FacingBehaviours, MovementBehaviours, FiringBehaviours, shipBehaviours } from "./enemy-behaviours";
+import { ResourceHandler } from "../../common/resourceHandler";
 
 export class DroneShip extends BaseEnemy {
   protected ctx: CanvasRenderingContext2D;
@@ -11,7 +12,7 @@ export class DroneShip extends BaseEnemy {
 
   public movingAction = MovingAction.Stopped;
   public destinationPoint: Point | null = null;
-  public targetFacing: number | null = 11/6 * Math.PI;
+  public targetFacing: number | null = 11 / 6 * Math.PI;
 
   public behaviours: [FacingBehaviours, MovementBehaviours, FiringBehaviours] = ['faceTowardsPlayer', 'moveToRandomWaypointAndStop', "fireAtPlayer"];
   public weaponry: WeaponryTypes | null = 'Cannon';
@@ -33,7 +34,7 @@ export class DroneShip extends BaseEnemy {
     this.image.onload = () => {
       this._resourcesLoaded = true;
     }
-    this.image.src = "/src/assets/SCruiser.png"
+    this.image.src = ResourceHandler.getResourcePath('SCruiser.png');
 
     this._radius = 30;
 

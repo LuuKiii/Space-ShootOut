@@ -5,6 +5,7 @@ import { CollisionCalculator, OriginAndRadius } from "../../utils/collision-calc
 import { Helper } from "../../utils/helper";
 import { BaseShip } from "../base/base-ship";
 import { Angle, MovementConsts, Point, Vector } from "../base/base-types";
+import { ResourceHandler } from "../../common/resourceHandler";
 
 export class Player extends BaseShip {
   static instance: Player;
@@ -34,7 +35,7 @@ export class Player extends BaseShip {
     this.image.onload = () => {
       this._resourcesLoaded = true;
     }
-    this.image.src = "/src/assets/Player.png"
+    this.image.src = ResourceHandler.getResourcePath('Player.png')
 
     this._health = 100;
     this._radius = 30;
