@@ -33,7 +33,7 @@ export class DroneShip extends BaseEnemy {
     this.image.onload = () => {
       this._resourcesLoaded = true;
     }
-    this.image.src = "/assets/SCruiser.png"
+    this.image.src = "/src/assets/SCruiser.png"
 
     this._radius = 30;
 

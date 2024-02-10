@@ -34,7 +34,7 @@ export class Player extends BaseShip {
     this.image.onload = () => {
       this._resourcesLoaded = true;
     }
-    this.image.src = "/assets/Player.png"
+    this.image.src = "/src/assets/Player.png"
 
     this._health = 100;
     this._radius = 30;

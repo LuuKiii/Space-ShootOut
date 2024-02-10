@@ -17,7 +17,7 @@ export class RenderBackground {
     this.image.onload = () => {
       this.resourcesLoaded = true;
     }
-    this.image.src = "/assets/nebula.jpg";
+    this.image.src = "/src/assets/nebula.jpg";
   }
 
   drawBackground() {
