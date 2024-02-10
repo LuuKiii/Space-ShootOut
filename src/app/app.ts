@@ -15,6 +15,7 @@ export class App {
   private gameLoop: GameLoop;
 
   constructor() {
+    console.log('hello')
     this.menu = MenuElement.getInstance();
     this.hud = HudElement.getInstance();
     this.gameLoop = GameLoop.getInstance();
