@@ -1,7 +1,7 @@
 {
   "name": "space-shootout",
   "homepage": "https://luukiii.github.io/Space-ShootOut/",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite"
   },
