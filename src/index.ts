@@ -1,5 +1,5 @@
 import { App } from './app/app';
-import './styles/main.scss'
+// import './styles/main.scss'
 
 // console.log("Hello World!");
 
